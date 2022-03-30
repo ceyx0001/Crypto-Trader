@@ -28,7 +28,7 @@ public class TradeController implements ActionListener {
     }
 
     private void updateView() {
-
+        //next
     }
 
     @Override
