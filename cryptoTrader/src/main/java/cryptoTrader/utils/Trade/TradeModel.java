@@ -93,4 +93,8 @@ public class TradeModel {
         BrokerFactory factory = new BrokerFactory();
         return factory.getBroker(name, coins, strat);
     }
+
+    public void trade(Broker b) {
+
+    }
 }

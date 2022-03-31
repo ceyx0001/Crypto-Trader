@@ -71,6 +71,7 @@ public class TradeView extends JFrame {
 		instance.setSize(900, 600);
 		instance.pack();
 		instance.setVisible(true);
+		instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return instance;
 	}
 
@@ -154,10 +155,9 @@ public class TradeView extends JFrame {
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
-		strategyNames.add("Strategy-A");
-		strategyNames.add("Strategy-B");
-		strategyNames.add("Strategy-C");
-		strategyNames.add("Strategy-D");
+		strategyNames.add("Buy ADA");
+		strategyNames.add("Buy BTC");
+		strategyNames.add("Sell ETH");
 
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox comboBox = new JComboBox(strategyNames);

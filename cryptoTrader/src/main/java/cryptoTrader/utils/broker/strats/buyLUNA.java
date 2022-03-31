@@ -1,6 +1,6 @@
 package cryptoTrader.utils.broker.strats;
 
-public class buyLUNA implements Strategy {
+public class BuyLUNA implements Strategy {
     String name;
     String op1;
     String op2;
@@ -35,7 +35,6 @@ public class buyLUNA implements Strategy {
     public String printStrat()  {
         return name + ": " + coin1 + op1 + price1 + " & " + coin2 + op2 + price2 + " -> " + action + " " + amnt + " " + target;
     }
-
 }
 
     

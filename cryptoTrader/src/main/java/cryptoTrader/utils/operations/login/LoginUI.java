@@ -133,7 +133,8 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
             } else {
                 input = JOptionPane.showConfirmDialog(null,
                         "Incorrect credentials. The app will now terminate.", "Error", JOptionPane.DEFAULT_OPTION);
-                if (input == 0) {
+
+                if (input == 0 || input == -1) {
                     dispose();
                 }
             }

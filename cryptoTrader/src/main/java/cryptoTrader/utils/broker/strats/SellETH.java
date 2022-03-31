@@ -14,14 +14,14 @@ public class SellETH implements Strategy {
 
     @Override
     public void create() {
-        name = "buy ETH";
+        name = "sell ETH";
         op1 = ">";
         op2 = ">";
         coin1 = "ADA";
         price1 = 1;
-        coin2 = "ETH";
-        price2 = 2500;
-        target = "BTC";
+        coin2 = "BTC";
+        price2 = 50000;
+        target = "ETH";
         action = "sell";
         amnt = 3;
     }
