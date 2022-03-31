@@ -4,7 +4,6 @@ import cryptoTrader.utils.api.DataVisualizationCreator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
@@ -21,49 +20,24 @@ public class TradeController implements ActionListener, TableModelListener {
         addListeners();
     }
 
-    public void addListeners() {
-        view.getTradeButton().addActionListener(this);
-        view.getRemButton().addActionListener(this);
-        view.getAddButton().addActionListener(this);
-        view.getTable().getModel().addTableModelListener(this);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         DefaultTableModel dtm = view.getDTM();
 
         if ("refresh".equals(command)) {
-            for (int count = 0; count < dtm.getRowCount(); count++) {
-                Object traderObject = dtm.getValueAt(count, 0);
-                if (traderObject == null) {
-                    JOptionPane.showMessageDialog(view, "please fill in Trader name on line " + (count + 1));
-                    return;
-                }
-                String traderName = traderObject.toString();
-                Object coinObject = dtm.getValueAt(count, 1);
-                if (coinObject == null) {
-                    JOptionPane.showMessageDialog(view, "please fill in cryptocoin list on line " + (count + 1));
-                    return;
-                }
-                String[] coinNames = coinObject.toString().split(",");
-                Object strategyObject = dtm.getValueAt(count, 2);
-                if (strategyObject == null) {
-                    JOptionPane.showMessageDialog(view, "please fill in strategy name on line " + (count + 1));
-                    return;
-                }
-                String strategyName = strategyObject.toString();
-                model.getBrokers().put(traderName, Arrays.asList(Arrays.toString(coinNames), strategyName));
-            }
-            view.getStats().removeAll();
-            DataVisualizationCreator creator = new DataVisualizationCreator();
-            creator.createCharts();
-            model.saveBrokers();
+            saveTable(dtm);
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
         } else if ("remTableRow".equals(command)) {
             int selectedRow = view.getTable().getSelectedRow();
             if (selectedRow != -1) {
+                Object val = view.getTable().getValueAt(selectedRow, 0);
+                String name;
+                if (val != null) {
+                    name = val.toString();
+                    model.removeBroker(name);
+                }
                 dtm.removeRow(selectedRow);
             }
         }
@@ -81,5 +55,41 @@ public class TradeController implements ActionListener, TableModelListener {
                 view.getTable().getModel().setValueAt("", row, col);
             }
         }
+    }
+
+    private void saveTable(DefaultTableModel dtm) {
+        for (int count = 0; count < dtm.getRowCount(); count++) {
+            Object traderObject = dtm.getValueAt(count, 0);
+            if (traderObject == null) {
+                JOptionPane.showMessageDialog(view, "please fill in Trader name on line " + (count + 1));
+                return;
+            }
+            String name = traderObject.toString();
+            Object coinObject = dtm.getValueAt(count, 1);
+            if (coinObject == null) {
+                JOptionPane.showMessageDialog(view, "please fill in cryptocoin list on line " + (count + 1));
+                return;
+            }
+
+            String coins = coinObject.toString().replaceAll("\\[|\\]", "");
+            Object strategyObject = dtm.getValueAt(count, 2);
+            if (strategyObject == null) {
+                JOptionPane.showMessageDialog(view, "please fill in strategy name on line " + (count + 1));
+                return;
+            }
+            String strat = strategyObject.toString();
+            model.getBrokers().put(name, model.newBroker(name, coins, strat));
+        }
+        view.getStats().removeAll();
+        DataVisualizationCreator creator = new DataVisualizationCreator();
+        creator.createCharts();
+        model.saveBrokers();
+    }
+
+    private void addListeners() {
+        view.getTradeButton().addActionListener(this);
+        view.getRemButton().addActionListener(this);
+        view.getAddButton().addActionListener(this);
+        view.getTable().getModel().addTableModelListener(this);
     }
 }

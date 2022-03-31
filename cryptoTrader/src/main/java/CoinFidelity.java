@@ -53,7 +53,7 @@ public class CoinFidelity {
                         + "	id TEXT UNIQUE NOT NULL,"
                         + "	pass TEXT NOT NULL);";
                 c.createStatement().execute(command);
-            }
+            } 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -66,7 +66,7 @@ public class CoinFidelity {
      */
     private static Connection connect() {
         Connection c = null;
-        try {
+        try {qw2
             c = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/cryptoTrader/db/local.db");
         } catch (SQLException e) {
             e.printStackTrace();

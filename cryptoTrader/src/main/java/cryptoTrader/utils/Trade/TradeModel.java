@@ -5,15 +5,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import cryptoTrader.utils.broker.Broker;
+import cryptoTrader.utils.broker.BrokerFactory;
+
 public class TradeModel {
     private Connection connection;
-    private HashMap<String, List<String>> brokers;
+    private HashMap<String, Broker> brokers;
     
     public TradeModel() {
         try {
@@ -21,7 +22,7 @@ public class TradeModel {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        brokers = new HashMap<String, List<String>>();
+        brokers = new HashMap<String, Broker>();
     }
 
     public DefaultTableModel getBrokersTable() {
@@ -40,13 +41,12 @@ public class TradeModel {
 
             int i = 0;
             while (rs.next()) {
-                data[i][0] = rs.getString("id");
+                String name = rs.getString("id");
+                String strat = rs.getString("strat");
+                data[i][0] = name;
                 data[i][1] = rs.getString("coins");
-                data[i][2] = rs.getString("strat");
-                List<String> temp = new ArrayList<String>();
-                temp.add(rs.getString("coins"));
-                temp.add(rs.getString("strat"));
-                brokers.put(rs.getString("id"), temp);
+                data[i][2] = strat;
+                brokers.put(name, newBroker(name, rs.getString("coins"), strat));
                 i++;
             }
 
@@ -57,43 +57,40 @@ public class TradeModel {
         return null;
     }
 
-    public HashMap<String, List<String>> getBrokers() {
+    public HashMap<String, Broker> getBrokers() {
         return brokers;
     }
 
     public void saveBrokers() {
         try {
-            String insert = "INSERT INTO Brokers(id, coins, strat) VALUES(?,?,?)";
+            String insert = "INSERT OR IGNORE INTO Brokers(id, coins, strat) VALUES(?,?,?)";
             PreparedStatement s = connection.prepareStatement(insert);
 
             for (String key : brokers.keySet()) {
                 s.setString(1, key);
-                s.setString(2, brokers.get(key).get(0).replaceAll("\\[\\]", ""));
-                s.setString(3, brokers.get(key).get(1));
+                s.setString(2, brokers.get(key).getCoins().toString().replaceAll("\\[|\\]", ""));
+                s.setString(3, brokers.get(key).getStrat().getType());
                 s.execute();
             }
-            
         } catch (SQLException e) {
             System.out.println("saveBrokers: " + e.getMessage());
         }
     }
 
-    public boolean removeBroker() {
+    public void removeBroker(String name) {
         try {
-            String command = "INSERT INTO Brokers(id, coins, strat) VALUES(?,?,?)";
-            PreparedStatement s = connection.prepareStatement(command);
-
-            for (String key : brokers.keySet()) {
-                s.setString(1, key);
-                s.setString(2, brokers.get(key).get(0));
-                s.setString(3, brokers.get(key).get(1));
-                s.execute();
-            }
-
-            return true;
+            String insert = "DELETE FROM Brokers WHERE id = ?";
+            PreparedStatement s = connection.prepareStatement(insert);
+            s.setString(1, name);
+            s.execute();
+            brokers.remove(name); 
         } catch (SQLException e) {
             System.out.println("saveBrokers: " + e.getMessage());
         }
-        return false;
+    }
+
+    public Broker newBroker(String name, String coins, String strat) {
+        BrokerFactory factory = new BrokerFactory();
+        return factory.getBroker(name, coins, strat);
     }
 }
