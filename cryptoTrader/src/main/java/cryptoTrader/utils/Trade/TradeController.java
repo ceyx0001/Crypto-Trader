@@ -79,6 +79,7 @@ public class TradeController implements ActionListener, TableModelListener {
             }
             String strat = strategyObject.toString();
             model.getBrokers().put(name, model.newBroker(name, coins, strat));
+            System.out.println(model.getBrokers().get(name).getStrat().printStrat());
         }
         view.getStats().removeAll();
         DataVisualizationCreator creator = new DataVisualizationCreator();

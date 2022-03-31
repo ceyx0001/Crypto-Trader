@@ -66,7 +66,7 @@ public class CoinFidelity {
      */
     private static Connection connect() {
         Connection c = null;
-        try {qw2
+        try {
             c = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/cryptoTrader/db/local.db");
         } catch (SQLException e) {
             e.printStackTrace();

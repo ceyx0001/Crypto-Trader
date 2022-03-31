@@ -3,7 +3,7 @@ package cryptoTrader.utils.broker;
 import java.util.Arrays;
 import java.util.List;
 
-import cryptoTrader.utils.broker.strats.StratA;
+import cryptoTrader.utils.broker.strats.BuyADA;
 import cryptoTrader.utils.broker.strats.Strategy;
 
 public class BrokerFactory {
@@ -14,7 +14,7 @@ public class BrokerFactory {
     
     public Strategy getStrategy(String strat) {
         if (strat.equalsIgnoreCase("strategy-a")) {
-            return new StratA();
+            return new BuyADA();
         }
         return null;
     }

@@ -69,7 +69,7 @@ public class TradeModel {
             for (String key : brokers.keySet()) {
                 s.setString(1, key);
                 s.setString(2, brokers.get(key).getCoins().toString().replaceAll("\\[|\\]", ""));
-                s.setString(3, brokers.get(key).getStrat().getType());
+                s.setString(3, brokers.get(key).getStrat().getName());
                 s.execute();
             }
         } catch (SQLException e) {
