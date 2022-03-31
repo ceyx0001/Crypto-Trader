@@ -16,19 +16,16 @@ public class TradeController implements ActionListener {
     private TradeModel model;
     private TradeView view;
 
-    public TradeController(TradeModel model, TradeView view) {
-        this.model = model;
-        this.view = view;
+    public TradeController() {
+        model = new TradeModel();
+        view = TradeView.getInstance(model.getBrokers());
+        addListeners();
     }
 
-    public void initGUI() {
+    public void addListeners() {
         view.getTradeButton().addActionListener(this);
         view.getRemButton().addActionListener(this);
         view.getAddButton().addActionListener(this);
-    }
-
-    private void updateView() {
-        //next
     }
 
     @Override
@@ -62,7 +59,7 @@ public class TradeController implements ActionListener {
             view.getStats().removeAll();
             DataVisualizationCreator creator = new DataVisualizationCreator();
             creator.createCharts();
-            model.setBrokers(brokers);
+            model.saveBrokers(brokers);
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
         } else if ("remTableRow".equals(command)) {

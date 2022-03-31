@@ -1,65 +1,79 @@
 package cryptoTrader.utils.operations.login;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+/**
+ * This class implements the data operations to
+ * fetch and save user information to the embedded database
+ * 
+ * @author Jun Shao
+ * @since 2022-03-30
+ */
 public class UserActions {
+    private Connection connection;
     private String name;
     private String pass;
 
+    /**
+     * Constructor method to create an object instance of UserActions
+     * @param name name of the user
+     * @param pass password of the user
+     * @return Nothing.
+     */
     public UserActions(String name, String pass) {
         this.name = name;
         this.pass = pass;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/cryptoTrader/db/local.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Determines if the name and password of the user are valid
+     * @param Nothing
+     * @return boolean Determines if the authentication process was successful
+     */
     public boolean authenticate() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("cryptoTrader/src/main/java/cryptoTrader/storage/"));
-            String line = reader.readLine();
-
-            if (line == null) {
-                reader.close();
-                return false;
-            }
-
-            String details = name + " " + pass;
-            while (line != null && !line.equals(details)) {
-                line = reader.readLine();
-                if (line == null) {
-                    reader.close();
-                    return false;
-                }
-            }
-            reader.close();
-            if (line.equals(details)) {
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            String command = "SELECT id, pass FROM Users WHERE id = ?";
+            PreparedStatement s  = connection.prepareStatement(command);
+            s.setString(1, name);
+            ResultSet rs  = s.executeQuery();
+            String tempid = rs.getString("id");
+            String tempPass = rs.getString("pass");
+            connection.close();
+            return (name.equals(tempid) && pass.equals(tempPass));
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return false;
     }
 
-    public boolean register() {
-        System.out.println(name + " " + pass);
+    /**
+     * Saves the user information to the embedded database
+     * @param Nothing
+     * @return boolean Determines if the info was saved successfully
+     */
+    public boolean saveUser() {
         try {
-            File f = new File("cryptoTrader/src/main/java/cryptoTrader/storage/");
-            if (!f.exists()) {
-                f.createNewFile();
+            String command = "INSERT INTO Users(id, pass) VALUES(?,?)";
+            PreparedStatement s = connection.prepareStatement(command);
+            s.setString(1, name);
+            s.setString(2, pass);
+            s.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19) {
+                System.out.println("User already registered.");
+            } else {
+                System.out.println(e.getMessage());
             }
-            if (!authenticate()) {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
-                writer.write(name + " " + pass);
-                writer.newLine();
-                writer.close();
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return false;
     }

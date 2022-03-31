@@ -3,10 +3,7 @@ package cryptoTrader.utils.trade;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +24,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+/** 
+ * This class is the view component of the trading system
+ * 
+ * @author Jun Shao
+ * @since 2022-03-30
+ */
 public class TradeView extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -55,8 +57,17 @@ public class TradeView extends JFrame {
 	private JTable table;
 
 	public static TradeView getInstance() {
-		if (instance == null)
-			instance = new TradeView();
+		return instance;
+	}
+
+	public static TradeView getInstance(DefaultTableModel d) {
+		if (instance == null) {
+			synchronized (TradeView.class) {
+				if (instance == null) {
+					instance = new TradeView(d);
+				}
+			}
+		}
 		instance.setSize(900, 600);
 		instance.pack();
 		instance.setVisible(true);
@@ -75,10 +86,6 @@ public class TradeView extends JFrame {
 		return remRow;
 	}
 
-	public DefaultTableModel getDTM() {
-		return dtm;
-	}
-
 	public JTable getTable() {
 		return table;
 	}
@@ -87,8 +94,11 @@ public class TradeView extends JFrame {
 		return stats;
 	}
 
-	private TradeView() {
+	public DefaultTableModel getDTM() {
+		return dtm;
+	}
 
+	private TradeView(DefaultTableModel dtm) {
 		// Set window title
 		super("Crypto Trading Tool");
 
@@ -128,7 +138,7 @@ public class TradeView extends JFrame {
 //				return "";
 //			}
 //		});
-
+		this.dtm = dtm;
 		trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 
@@ -137,7 +147,6 @@ public class TradeView extends JFrame {
 		
 		south.add(trade);
 
-		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
 		table = new JTable(dtm);
 		//table.setPreferredSize(new Dimension(600, 300));
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -149,9 +158,11 @@ public class TradeView extends JFrame {
 		strategyNames.add("Strategy-B");
 		strategyNames.add("Strategy-C");
 		strategyNames.add("Strategy-D");
+
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox comboBox = new JComboBox(strategyNames);
 		strategyColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
 		addRow = new JButton("Add Row");
 		remRow = new JButton("Remove Row");
 		addRow.setActionCommand("addTableRow");

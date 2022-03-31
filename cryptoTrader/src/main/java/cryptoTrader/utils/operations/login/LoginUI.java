@@ -1,5 +1,10 @@
 package cryptoTrader.utils.operations.login;
 
+import cryptoTrader.utils.operations.main.OperationExecutor;
+import cryptoTrader.utils.trade.TradeController;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,19 +15,27 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import cryptoTrader.utils.operations.OperationExecutor;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+/**
+ * This class implements the login functionality of the system.
+ * Namely the security, user registration, and event handling of the user login
+ * use case.
+ * 
+ * @author Jun Shao
+ * @since 2022-03-30
+ */
 public class LoginUI extends JFrame implements ActionListener, DocumentListener {
     private static LoginUI instance;
-    private static JTextField nameIn;
-    private static JPasswordField passIn;
-    private static JButton enter;
-    private static JButton register;
-    private static JButton mask;
+    private JTextField nameIn;
+    private JPasswordField passIn;
+    private JButton enter;
+    private JButton register;
+    private JButton mask;
 
+    /**
+     * Creates and returns a reference of a singleton security proxy
+     * @param Nothing
+     * @return LoginUI the static reference to the singleton
+     */
     public static LoginUI newLogin() {
         if (instance == null) {
             synchronized (LoginUI.class) {
@@ -31,9 +44,18 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
                 }
             }
         }
+        instance.setSize(300, 270);
+        instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        instance.setVisible(true);
+        instance.setResizable(false);
         return instance;
     }
 
+    /**
+     * Constructor method for the GUI
+     * @param Nothing
+     * @return Nothing.
+     */
     private LoginUI() {
         super("Authentication");
 
@@ -81,14 +103,11 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         super.setLocationRelativeTo(null);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = LoginUI.newLogin();
-        frame.setSize(300, 270);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setResizable(false);
-    }
-
+    /**
+     * actionPerformed handles the logic for action events
+     * @param e the action event
+     * @return void
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         OperationExecutor executor = new OperationExecutor();
@@ -109,7 +128,8 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         } else if (e.getActionCommand().equals("Login")) {
             result = executor.execute(new Authenticate(nameIn.getText(), pass));
             if (result) {
-                // start main ui
+                TradeController control = new TradeController();
+                dispose();
             } else {
                 input = JOptionPane.showConfirmDialog(null,
                         "Incorrect credentials. The app will now terminate.", "Error", JOptionPane.DEFAULT_OPTION);
@@ -126,23 +146,45 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         }
     }
 
+    /**
+     * Gives notification that there was an insert into the document
+     * @param e the document event
+     * @return void
+     */
     @Override
     public void insertUpdate(DocumentEvent e) {
-        changed();
+        update();
 
     }
 
+    /**
+     * Gives notification that a portion of the document has been removed
+     * 
+     * @param e the document event
+     * @return void
+     */
     @Override
     public void removeUpdate(DocumentEvent e) {
-        changed();
+        update();
     }
 
+    /**
+     * Gives notification that an attribute or set of attributes changed
+     * 
+     * @param e the document event
+     * @return void
+     */
     @Override
     public void changedUpdate(DocumentEvent e) {
-        changed();
+        update();
     }
 
-    private void changed() {
+    /**
+     * Handles the greying out the GUI buttons
+     * @param Nothing
+     * @return void
+     */
+    private void update() {
         if (passIn.getPassword().length == 0 || nameIn.getText().equals("")) {
             enter.setEnabled(false);
             register.setEnabled(false);
