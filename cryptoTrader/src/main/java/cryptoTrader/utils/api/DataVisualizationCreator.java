@@ -34,7 +34,7 @@ public class DataVisualizationCreator {
 	public void createCharts() {
 //		createTextualOutput();
 		createTableOutput();
-//		createTimeSeries();
+		createTimeSeries();
 //		createScatter();
 		createBar();
 	}

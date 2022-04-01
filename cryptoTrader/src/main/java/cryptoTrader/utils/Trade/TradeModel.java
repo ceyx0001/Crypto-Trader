@@ -95,6 +95,6 @@ public class TradeModel {
     }
 
     public void trade(Broker b) {
-
+        
     }
 }

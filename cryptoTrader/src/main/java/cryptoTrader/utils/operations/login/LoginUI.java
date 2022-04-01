@@ -1,10 +1,9 @@
 package cryptoTrader.utils.operations.login;
-
-import cryptoTrader.utils.operations.main.OperationExecutor;
 import cryptoTrader.utils.trade.TradeController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,40 +23,23 @@ import javax.swing.event.DocumentListener;
  * @since 2022-03-30
  */
 public class LoginUI extends JFrame implements ActionListener, DocumentListener {
-    private static LoginUI instance;
     private JTextField nameIn;
     private JPasswordField passIn;
     private JButton enter;
     private JButton register;
     private JButton mask;
-
-    /**
-     * Creates and returns a reference of a singleton security proxy
-     * @param Nothing
-     * @return LoginUI the static reference to the singleton
-     */
-    public static LoginUI newLogin() {
-        if (instance == null) {
-            synchronized (LoginUI.class) {
-                if (instance == null) {
-                    instance = new LoginUI();
-                }
-            }
-        }
-        instance.setSize(300, 270);
-        instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        instance.setVisible(true);
-        instance.setResizable(false);
-        return instance;
-    }
+    private boolean success = false;
 
     /**
      * Constructor method for the GUI
      * @param Nothing
      * @return Nothing.
      */
-    private LoginUI() {
+    public LoginUI() {
         super("Authentication");
+        setSize(300, 270);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
 
         JPanel panel = new JPanel();
         super.add(panel);
@@ -100,7 +82,8 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         register.setEnabled(false);
         panel.add(register);
         
-        super.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     /**
@@ -110,14 +93,14 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        OperationExecutor executor = new OperationExecutor();
         String name = nameIn.getText();
         String pass = new String(passIn.getPassword());
         boolean result;
         int input;
+        UserOperation action = new UserOperation(name, pass);
 
         if (e.getActionCommand().equals("Register")) {
-            result = executor.execute(new Register(name, pass));
+            result = action.saveUser();
             if (result) {
                 input = JOptionPane.showConfirmDialog(null,
                         "Successfully registered " + name + ".", "Welcome", JOptionPane.DEFAULT_OPTION);
@@ -126,7 +109,7 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
                         name + " already exists.", "Error", JOptionPane.DEFAULT_OPTION);
             }
         } else if (e.getActionCommand().equals("Login")) {
-            result = executor.execute(new Authenticate(nameIn.getText(), pass));
+            result = action.authenticate();
             if (result) {
                 TradeController control = new TradeController();
                 dispose();
