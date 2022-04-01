@@ -1,39 +1,38 @@
 package cryptoTrader.utils.broker.strats;
 
-public class BuyADA implements Strategy {
+public class BuyLUNA implements Strategy {
     String name;
     String op1;
     String op2;
     String coin1;
-    int price1;
     String coin2;
-    int price2;
     String target;
     String action;
+    int price1;
+    int price2;
     int amnt;
 
-    public BuyADA() {
-        name = "buy ADA";
-        op1 = "<";
-        op2 = ">";
+    public BuyLUNA() {
+        name = "buy LUNA";
+        op1 = ">";
+        op2 = "<";
         coin1 = "BTC";
-        price1 = 50000;
-        coin2 = "ADA";
-        price2 = 2;
-        target = "ADA";
+        price1 = 55000;
+        coin2 = "ETH";
+        price2 = 3500;
+
         action = "buy";
-        amnt = 10;
+        target = "LUNA";
+        amnt = 60;
+
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     @Override
-    public String printStrat() {
-        return name + ": " + coin1 + op1 + price1 + " & " + coin2 + op2 + price2 + " -> " + action + " " + amnt + " "
-                + target;
+    public String printStrat()  {
+        return name + ": " + coin1 + op1 + price1 + " & " + coin2 + op2 + price2 + " -> " + action + " " + amnt + " " + target;
     }
 
     @Override
@@ -55,4 +54,7 @@ public class BuyADA implements Strategy {
     public String getType(){
         return action;
     }
+
 }
+
+    

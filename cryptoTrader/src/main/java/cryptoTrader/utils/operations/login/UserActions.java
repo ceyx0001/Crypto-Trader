@@ -28,7 +28,7 @@ public class UserActions {
         this.name = name;
         this.pass = pass;
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/cryptoTrader/db/local.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/java/cryptoTrader/db/local.db");
         } catch (SQLException e) {
             e.printStackTrace();
         }

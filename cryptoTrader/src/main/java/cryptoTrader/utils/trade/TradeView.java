@@ -154,10 +154,10 @@ public class TradeView extends JFrame {
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
-		strategyNames.add("Strategy-A");
-		strategyNames.add("Strategy-B");
-		strategyNames.add("Strategy-C");
-		strategyNames.add("Strategy-D");
+		strategyNames.add("Buy ADA");
+		strategyNames.add("Buy BTC");
+		strategyNames.add("Buy LUNA");
+		strategyNames.add("Sell ETH");
 
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox comboBox = new JComboBox(strategyNames);
