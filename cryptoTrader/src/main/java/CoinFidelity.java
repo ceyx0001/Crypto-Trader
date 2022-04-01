@@ -1,5 +1,4 @@
-import cryptoTrader.utils.operations.login.LoginUI;
-import cryptoTrader.utils.trade.TradeController;
+import utils.login.LoginUI;
 
 /**
  * This class is the main driver prgoram for the system
@@ -15,6 +14,6 @@ public class CoinFidelity {
      * @return void
      */
     public static void main(String[] args) {
-        LoginUI login = new LoginUI();
+        new LoginUI();
     }
 }
