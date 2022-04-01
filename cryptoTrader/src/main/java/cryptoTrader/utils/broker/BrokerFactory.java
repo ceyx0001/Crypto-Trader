@@ -23,15 +23,6 @@ public class BrokerFactory {
             case "Buy LUNA":
                 s = new BuyLUNA();
                 return s;
-            case "Sell ETH":
-                s = new SellETH();
-                return s;
-            case "Sell BNB":
-                s = new SellBNB();
-                return s;
-            case "None":
-                s = new None();
-                return s;
         }
         return null;
     }
