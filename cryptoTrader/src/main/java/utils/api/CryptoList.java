@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.google.gson.JsonArray;
@@ -14,18 +12,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class CryptoList {
-	private Map<String, String> cryptosMap;
-	private List<String> cryptosListName;
 	private List<String> cryptoListSym;
 
 	public CryptoList() {
-		cryptosMap = new HashMap<>();
-		cryptosListName = new ArrayList<>();
 		cryptoListSym = new ArrayList<>();
 		findAvailableCryptos();
-		for (String name : cryptosListName) {
-			cryptoListSym.add(cryptosMap.get(name));
-		}
 	}
 	
 	private void findAvailableCryptos() {
@@ -48,13 +39,10 @@ public class CryptoList {
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();
 				int size = jsonArray.size();
 				
-				String name, symbol;
 				for (int i = 0; i < size; i++) {
 					JsonObject object = jsonArray.get(i).getAsJsonObject();
-					name = object.get("id").getAsString().toLowerCase();
-					symbol = object.get("symbol").getAsString().toUpperCase();
-					cryptosMap.put(symbol, name);
-					cryptosListName.add(name);
+					String symbol = object.get("symbol").getAsString().toUpperCase();
+					cryptoListSym.add(symbol);
 				}
 			}
 

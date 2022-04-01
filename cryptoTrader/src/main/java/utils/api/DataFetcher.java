@@ -16,6 +16,7 @@ public class DataFetcher {
 
 	protected DataFetcher() {
 		priceMap = new HashMap<String, Double>();
+		populate();
 	}
 
 	protected HashMap<String, Double> getPriceMap() {
@@ -23,10 +24,10 @@ public class DataFetcher {
 	}
 
 	protected void populate() {
-		CryptoList list = new CryptoList();
-		for (int i = 0; i < list.getAvailableCryptos().length; i++) {
-			String name = list.getAvailableCryptos()[i];
-			priceMap.put(name, getPriceForCoin(name, today()));
+		String[] list = new CryptoList().getAvailableCryptos();
+		for (int i = 0; i < list.length; i++) {
+			String name = list[i];
+			priceMap.put(name, getPriceForCoin(name, today())); //need static data fetch, keeps opening http request
 		}
 	}
 

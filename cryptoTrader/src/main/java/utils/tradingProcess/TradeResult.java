@@ -6,7 +6,7 @@ import java.util.List;
 public class TradeResult {
     private List<String[]> table;
     
-    public TradeResult() {
+    protected TradeResult() {
         table = new ArrayList<String[]>();
     }
 
@@ -18,7 +18,7 @@ public class TradeResult {
         }
     }
 
-    public String[][] getResult() {
+    public String[][] getTable() {
         int rows = table.size();
         String[][] result = new String[rows][7];
         for (int i = 0; i < rows; i++) {

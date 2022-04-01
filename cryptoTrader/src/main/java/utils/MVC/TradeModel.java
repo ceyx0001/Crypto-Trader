@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import utils.broker.Broker;
 import utils.broker.BrokerFactory;
 import utils.db.ConnectionFacade;
+import utils.tradingProcess.TradeProcess;
 
 public class TradeModel {
     private Connection connection;
@@ -89,5 +90,9 @@ public class TradeModel {
     public Broker newBroker(String name, String coins, String strat) {
         BrokerFactory factory = new BrokerFactory();
         return factory.getBroker(name, coins, strat);
+    }
+
+    public String[][] getResults() {
+        return new TradeProcess().trade(brokers).getTable();
     }
 }

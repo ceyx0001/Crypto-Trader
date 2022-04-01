@@ -1,7 +1,5 @@
 package utils.MVC;
 
-import utils.api.DataVisualizationCreator;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -83,7 +81,7 @@ public class TradeController implements ActionListener, TableModelListener {
 
         view.getStats().removeAll();
         DataVisualizationCreator creator = new DataVisualizationCreator();
-        creator.createCharts();
+        creator.createCharts(model.getResults());
         model.saveBrokers();
     }
 

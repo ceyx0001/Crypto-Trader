@@ -26,8 +26,7 @@ public class BuyDouble implements Transaction {
     }
 
     @Override
-    public void trade(TradeResult tr, Broker b) {
-        HashMap<String, Double> prices = new CoinPriceFacade().getPrices();
+    public void trade(TradeResult tr, Broker b, HashMap<String, Double> prices) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date dateVar = new Date();
         String date = formatter.format(dateVar);
