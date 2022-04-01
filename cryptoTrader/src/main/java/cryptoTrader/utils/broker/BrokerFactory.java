@@ -10,7 +10,7 @@ public class BrokerFactory {
         List<String> coinList = Arrays.asList(coins.split(", "));
         return new Broker(name, coinList, getStrategy(strat));
     }
-    
+
     public Strategy getStrategy(String strat) {
         Strategy s;
         switch (strat) {

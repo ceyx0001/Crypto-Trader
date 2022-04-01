@@ -157,6 +157,7 @@ public class TradeView extends JFrame {
 		strategyNames.add("None");
 		strategyNames.add("Buy ADA");
 		strategyNames.add("Buy BTC");
+		strategyNames.add("Buy LUNA");
 		strategyNames.add("Sell ETH");
 
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);

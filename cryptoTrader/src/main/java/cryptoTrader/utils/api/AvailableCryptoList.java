@@ -19,14 +19,14 @@ public class AvailableCryptoList {
 	private Map<String, String> availableCryptosMap = new HashMap<>();
 	private List<String> availableCryptosList = new ArrayList<>();
 	
-	public static AvailableCryptoList getInstance() {
+	private static AvailableCryptoList getInstance() {
 		if (instance == null)
 			instance = new AvailableCryptoList();
 		
 		return instance;
 	}
-	
-	private AvailableCryptoList() {
+
+	public AvailableCryptoList() {
 		findAvailableCryptos();
 	}
 	

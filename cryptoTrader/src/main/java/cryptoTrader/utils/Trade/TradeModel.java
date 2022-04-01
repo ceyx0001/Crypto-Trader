@@ -18,7 +18,7 @@ public class TradeModel {
     
     public TradeModel() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/cryptoTrader/db/local.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/java/cryptoTrader/db/local.db");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -92,9 +92,5 @@ public class TradeModel {
     public Broker newBroker(String name, String coins, String strat) {
         BrokerFactory factory = new BrokerFactory();
         return factory.getBroker(name, coins, strat);
-    }
-
-    public void trade(Broker b) {
-        
     }
 }

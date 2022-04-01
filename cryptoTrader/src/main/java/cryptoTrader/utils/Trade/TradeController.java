@@ -1,9 +1,12 @@
 package cryptoTrader.utils.trade;
 
+import cryptoTrader.utils.api.AvailableCryptoList;
+import cryptoTrader.utils.api.DataFetcher;
 import cryptoTrader.utils.api.DataVisualizationCreator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
@@ -13,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class TradeController implements ActionListener, TableModelListener {
     private TradeModel model;
     private TradeView view;
+    private String[] tradeList;
 
     public TradeController() {
         model = new TradeModel();
@@ -79,8 +83,12 @@ public class TradeController implements ActionListener, TableModelListener {
             }
             String strat = strategyObject.toString();
             model.getBrokers().put(name, model.newBroker(name, coins, strat));
-            model.trade(model.getBrokers().get(name));
+            //System.out.println(model.getBrokers().get(name).getStrat().printStrat());
         }
+        AvailableCryptoList cryptoList = new AvailableCryptoList();
+        DataFetcher dataFetcher = new DataFetcher();
+        tradeList = new TradeProcess().trade(model.getBrokers(), cryptoList, dataFetcher);
+
         view.getStats().removeAll();
         DataVisualizationCreator creator = new DataVisualizationCreator();
         creator.createCharts();

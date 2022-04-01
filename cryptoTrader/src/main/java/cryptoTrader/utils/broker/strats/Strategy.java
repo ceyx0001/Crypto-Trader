@@ -1,7 +1,10 @@
 package cryptoTrader.utils.broker.strats;
 
 public interface Strategy {
-    void create();
     String getName();
     String printStrat();
+    String[] getCoin();
+    String[] getCoin2();
+    String[] getTarget();
+    String getType();
 }

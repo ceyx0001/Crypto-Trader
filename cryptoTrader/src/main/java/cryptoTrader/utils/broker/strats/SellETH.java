@@ -36,4 +36,24 @@ public class SellETH implements Strategy {
         return name + ": " + coin1 + op1 + price1 + " & " + coin2 + op2 + price2 + " -> " + action + " " + amnt + " "
                 + target;
     }
+
+    @Override
+    public String[] getCoin() {
+        return new String[] {coin1, op1, "" + price1};
+    }
+
+    @Override
+    public String[] getCoin2() {
+        return new String[] {coin2, op2, "" + price2};
+    }
+
+    @Override
+    public String[] getTarget() {
+        return new String[] {target, "" + amnt};
+    }
+
+    @Override
+    public String getType(){
+        return action;
+    }
 }
