@@ -9,7 +9,6 @@ import java.util.Queue;
 public class Database implements DatabaseInterface {
     private static Database dbinstance;
     private static Connection connection;
-    private static Queue<String> statements;
 
     /**
      * Returns the instance of the embedded database
@@ -31,7 +30,6 @@ public class Database implements DatabaseInterface {
      */
     private Database() {
         connection = connect();
-        statements = new LinkedList<String>();
     }
 
     /**
