@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,35 +26,16 @@ import javax.swing.table.TableColumn;
  * @author Jun Shao
  * @since 2022-03-30
  */
-public class TradeView extends JFrame {
+public class TradeView extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
+	private TradeModel model;
 
-	private static TradeView instance;
 	private JPanel stats;
 	private JButton trade;
 	private JButton addRow;
 	private JButton remRow;
 	private DefaultTableModel dtm;
 	private JTable table;
-
-	public static TradeView getInstance() {
-		return instance;
-	}
-
-	public static TradeView getInstance(DefaultTableModel d) {
-		if (instance == null) {
-			synchronized (TradeView.class) {
-				if (instance == null) {
-					instance = new TradeView(d);
-				}
-			}
-		}
-		instance.setSize(900, 600);
-		instance.pack();
-		instance.setVisible(true);
-		instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		return instance;
-	}
 
 	public JButton getTradeButton() {
 		return trade;
@@ -79,9 +61,15 @@ public class TradeView extends JFrame {
 		return dtm;
 	}
 
-	private TradeView(DefaultTableModel dtm) {
+	protected TradeView(DefaultTableModel dtm, TradeModel model) {
 		// Set window title
 		super("Crypto Trading Tool");
+		setSize(900, 600);
+		pack();
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.model = model;
+		model.attach(this);
 
 		// Set top bar
 
@@ -184,5 +172,13 @@ public class TradeView extends JFrame {
 	public void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
+	}
+
+	@Override
+	public void updateObserver(Subject changed) {
+		if (changed.equals(model)) {
+			JOptionPane.showConfirmDialog(null, "Trading process starting",
+					"Perform Trade", JOptionPane.DEFAULT_OPTION);
+		}
 	}
 }

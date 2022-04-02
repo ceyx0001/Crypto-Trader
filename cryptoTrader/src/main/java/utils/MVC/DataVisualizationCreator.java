@@ -28,6 +28,11 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 public class DataVisualizationCreator {
+	private TradeView view;
+
+	public DataVisualizationCreator(TradeView view) {
+		this.view = view;
+	}
 	
 	public void createCharts(Object[][] data) {
 		//createTextualOutput();
@@ -72,7 +77,7 @@ public class DataVisualizationCreator {
 		scrollPane.setPreferredSize(new Dimension(800, 300));
 		table.setFillsViewportHeight(true);;
 		
-		TradeView.getInstance().updateStats(scrollPane);
+		view.updateStats(scrollPane);
 	}
 
 	private void createTimeSeries() {
@@ -123,7 +128,7 @@ public class DataVisualizationCreator {
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
 		
-		TradeView.getInstance().updateStats(chartPanel);
+		view.updateStats(chartPanel);
 	}
 	
 	private void createScatter() {
@@ -172,7 +177,7 @@ public class DataVisualizationCreator {
 		chartPanel.setPreferredSize(new Dimension(600, 300));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
-		TradeView.getInstance().updateStats(chartPanel);
+		view.updateStats(chartPanel);
 	}
 	
 	private void createBar() {
@@ -207,7 +212,7 @@ public class DataVisualizationCreator {
 		chartPanel.setPreferredSize(new Dimension(600, 300));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
-		TradeView.getInstance().updateStats(chartPanel);
+		view.updateStats(chartPanel);
 	}
 
 }

@@ -3,10 +3,13 @@ package utils.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Database implements DatabaseInterface {
     private static Database dbinstance;
     private static Connection connection;
+    private static Queue<String> statements;
 
     /**
      * Returns the instance of the embedded database
@@ -28,6 +31,7 @@ public class Database implements DatabaseInterface {
      */
     private Database() {
         connection = connect();
+        statements = new LinkedList<String>();
     }
 
     /**

@@ -13,8 +13,11 @@ public class TradeController implements ActionListener, TableModelListener {
 
     public TradeController() {
         model = new TradeModel();
-        view = TradeView.getInstance(model.getBrokersTable());
-        addListeners();
+        view = new TradeView(model.getBrokersTable(), model);
+        view.getTradeButton().addActionListener(this);
+        view.getRemButton().addActionListener(this);
+        view.getAddButton().addActionListener(this);
+        view.getTable().getModel().addTableModelListener(this);
     }
 
     @Override
@@ -24,6 +27,7 @@ public class TradeController implements ActionListener, TableModelListener {
 
         if ("refresh".equals(command)) {
             saveTable(dtm);
+            model.notifyObservers();
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
         } else if ("remTableRow".equals(command)) {
@@ -80,15 +84,8 @@ public class TradeController implements ActionListener, TableModelListener {
         }
 
         view.getStats().removeAll();
-        DataVisualizationCreator creator = new DataVisualizationCreator();
+        DataVisualizationCreator creator = new DataVisualizationCreator(view);
         creator.createCharts(model.getResults());
         model.saveBrokers();
-    }
-
-    private void addListeners() {
-        view.getTradeButton().addActionListener(this);
-        view.getRemButton().addActionListener(this);
-        view.getAddButton().addActionListener(this);
-        view.getTable().getModel().addTableModelListener(this);
     }
 }

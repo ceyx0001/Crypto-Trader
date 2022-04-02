@@ -13,7 +13,7 @@ import utils.broker.BrokerFactory;
 import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
-public class TradeModel {
+public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
 
