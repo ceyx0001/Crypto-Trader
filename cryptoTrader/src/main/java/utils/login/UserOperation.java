@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import utils.db.ConnectionFacade;
+import utils.db.DatabaseInterface;
+import utils.db.DatabaseProxy;
 
 /**
  * This is the class that handles the user login of the system
@@ -27,7 +27,9 @@ public class UserOperation {
     public UserOperation(String name, String pass) {
         this.name = name;
         this.pass = pass;
-        connection = new ConnectionFacade().getConnection();
+        DatabaseInterface db = new DatabaseProxy();
+        db.init();
+        connection = db.getConnection();
     }
 
     /**

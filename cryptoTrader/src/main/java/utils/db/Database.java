@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Database {
+public class Database implements DatabaseInterface {
     private static Database dbinstance;
     private static Connection connection;
 
@@ -27,14 +27,7 @@ public class Database {
      * @return Nothing
      */
     private Database() {
-        try {
-            connection = connect();
-            newDB();
-            connection = DriverManager
-                    .getConnection("jdbc:sqlite:cryptoTrader/src/main/java/utils/db/local.db");
-        } catch (SQLException e) {
-            System.out.println("DB creation failed: " + e.getMessage());
-        }
+        connection = connect();
     }
 
     /**
@@ -43,7 +36,8 @@ public class Database {
      * @param Nothing
      * @return Connection the connection to the embedded database
      */
-    protected Connection getConnection() {
+    @Override
+    public Connection getConnection() {
         return connection;
     }
 
@@ -53,7 +47,8 @@ public class Database {
      * @param Nothing
      * @return void
      */
-    private void newDB() {
+    @Override
+    public void init() {
         try {
             if (connection != null) {
                 String command = "CREATE TABLE IF NOT EXISTS Brokers ("

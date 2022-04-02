@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.broker.Broker;
 import utils.broker.BrokerFactory;
-import utils.db.ConnectionFacade;
+import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
 public class TradeModel {
@@ -18,7 +18,7 @@ public class TradeModel {
     private HashMap<String, Broker> brokers;
 
     public TradeModel() {
-        connection = new ConnectionFacade().getConnection();
+        connection = new DatabaseProxy().getConnection();
         brokers = new HashMap<String, Broker>();
     }
 

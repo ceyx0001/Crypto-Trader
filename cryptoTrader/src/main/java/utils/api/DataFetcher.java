@@ -27,7 +27,7 @@ public class DataFetcher {
 		String[] list = new CryptoList().getAvailableCryptos();
 		for (int i = 0; i < list.length; i++) {
 			String name = list[i];
-			priceMap.put(name, getPriceForCoin(name, today())); //need static data fetch, keeps opening http request
+			priceMap.put(name, getPriceForCoin(name, today())); //need static data fetch, keeps opening http request makes trade too slow
 		}
 	}
 

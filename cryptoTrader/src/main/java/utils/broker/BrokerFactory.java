@@ -15,13 +15,16 @@ public class BrokerFactory {
         Strategy s;
         switch (strat) {
             case "buy ADA":
-                s = new BuyADA();
+                s = new CreateADA().createStrategy();
                 return s;
             case "buy BTC":
-                s = new BuyBTC();
+                s = new CreateBTC().createStrategy();
                 return s;
-            case "buy LUNA":
-                s = new SellLUNA();
+            case "sell LUNA":
+                s = new CreateLUNA().createStrategy();
+                return s;
+            case "sell BNB":
+                s = new CreateBNB().createStrategy();
                 return s;
         }
         return null;

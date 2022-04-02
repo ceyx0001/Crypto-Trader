@@ -1,37 +1,31 @@
 package utils.tradingProcess.strats;
 
-import utils.api.CoinPriceFacade;
 import utils.broker.Broker;
 import utils.tradingProcess.TradeResult;
-import utils.tradingProcess.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class BuyDouble implements Transaction {
-    private String name;
-    private String strat;
-    private List<String> interest;
-    private String[] conditions;
-    private String target;
-    int amnt;
-
-    public BuyDouble(Broker b) {
-        name = b.getName();
-        interest = b.getCoins();
-        conditions = b.getStrat().getConditions();
-        target = b.getStrat().getTarget();
-    }
-
+public class TradeDouble extends Transaction {
     @Override
-    public void trade(TradeResult tr, Broker b, HashMap<String, Double> prices) {
+    public void trade(Context c) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date dateVar = new Date();
         String date = formatter.format(dateVar);
-
-        if (fail()) {
+        TradeResult tr = c.getTradeResult();
+        HashMap<String, Double> prices = c.getPrices();
+        Broker b = c.getBroker();
+        String name = b.getName();
+        String strat = b.getStrat().getName();
+        List<String> interest = b.getCoins();
+        String[] conditions = b.getStrat().getConditions();
+        String target = b.getStrat().getTarget();
+        int amnt = b.getStrat().getAmntBought();
+        
+        
+        if (fail(interest, target)) {
             tr.addRow(name, strat, target, "Buy", "Null", "Null", date);
         }
 
@@ -43,21 +37,12 @@ public class BuyDouble implements Transaction {
         String op2 = data2[1];
         double rp1 = Double.valueOf(data1[2]);
         double rp2 = Double.valueOf(data2[2]);
-        double ap1 = prices.get(name1);
+        double ap1 = c.getPrices().get(name1);
         double ap2 = prices.get(name2);
         double targetPrice = prices.get(target);
 
         if (new Compare().compare(ap1, rp1, ap2, rp2, op1, op2)) {
             tr.addRow(name, strat, target, "Buy", "" + amnt, "" + targetPrice, date);
         }
-    }
-
-    private boolean fail() {
-        for (String coin : interest) {
-            if (target.equals(coin)) {
-                return false;
-            }
-        }
-        return true;
     }
 }
