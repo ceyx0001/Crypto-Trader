@@ -29,6 +29,7 @@ import javax.swing.table.TableColumn;
 public class TradeView extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 	private TradeModel model;
+	private DataVisualizationCreator vc;
 
 	private JPanel stats;
 	private JButton trade;
@@ -61,7 +62,7 @@ public class TradeView extends JFrame implements Observer {
 		return dtm;
 	}
 
-	protected TradeView(DefaultTableModel dtm, TradeModel model) {
+	protected TradeView(DefaultTableModel dtm, TradeModel model, DataVisualizationCreator vc) {
 		// Set window title
 		super("Crypto Trading Tool");
 		setSize(900, 600);
@@ -69,7 +70,9 @@ public class TradeView extends JFrame implements Observer {
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.model = model;
+		this.vc = vc;
 		model.attach(this);
+		vc.attach(this);
 
 		// Set top bar
 
@@ -179,6 +182,11 @@ public class TradeView extends JFrame implements Observer {
 		if (changed.equals(model)) {
 			JOptionPane.showConfirmDialog(null, "Trading process starting",
 					"Perform Trade", JOptionPane.DEFAULT_OPTION);
+		} else if (changed.equals(vc)) {
+			updateStats(vc.getBar());
+			updateStats(vc.getScatter());
+			updateStats(vc.getScatter());
+			updateStats(vc.getScrollPane());
 		}
 	}
 }

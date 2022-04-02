@@ -10,10 +10,12 @@ import javax.swing.table.DefaultTableModel;
 public class TradeController implements ActionListener, TableModelListener {
     private TradeModel model;
     private TradeView view;
+    private DataVisualizationCreator vc;
 
     public TradeController() {
         model = new TradeModel();
-        view = new TradeView(model.getBrokersTable(), model);
+        vc = new DataVisualizationCreator();
+        view = new TradeView(model.getBrokersTable(), model, vc);
         view.getTradeButton().addActionListener(this);
         view.getRemButton().addActionListener(this);
         view.getAddButton().addActionListener(this);
@@ -84,8 +86,7 @@ public class TradeController implements ActionListener, TableModelListener {
         }
 
         view.getStats().removeAll();
-        DataVisualizationCreator creator = new DataVisualizationCreator(view);
-        creator.createCharts(model.getResults());
+        vc.createCharts(model.getResults());
         model.saveBrokers();
     }
 }
