@@ -1,46 +1,23 @@
-package utils.api;
+package cryptoTrader.utils.api;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class DataFetcher {
-	private HashMap<String, Double> priceMap;
-
-	protected DataFetcher() {
-		priceMap = new HashMap<String, Double>();
-		populate();
-	}
-
-	protected HashMap<String, Double> getPriceMap() {
-		return priceMap;
-	}
-
-	protected void populate() {
-		String[] list = new CryptoList().getAvailableCryptos();
-		for (int i = 0; i < list.length; i++) {
-			String name = list[i];
-			priceMap.put(name, getPriceForCoin(name, today())); //need static data fetch, keeps opening http request makes trade too slow
-		}
-	}
-
-	protected String today() {
-		SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-		return f.format( new Date());
-	}
 
 	private JsonObject getDataForCrypto(String id, String date) {
 
 		String urlString = String.format(
 				"https://api.coingecko.com/api/v3/coins/%s/history?date=%s", id, date);
-		
+
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -63,45 +40,52 @@ public class DataFetcher {
 		}
 		return null;
 	}
-	
-	private double getPriceForCoin(String id, String date) {
+
+	public double getPriceForCoin(String id, String date) {
 		double price = 0.0;
-		
+
 		JsonObject jsonObject = getDataForCrypto(id, date);
 		if (jsonObject != null) {
 			JsonObject marketData = jsonObject.get("market_data").getAsJsonObject();
 			JsonObject currentPrice = marketData.get("current_price").getAsJsonObject();
 			price = currentPrice.get("cad").getAsDouble();
 		}
-		
+
 		return price;
 	}
-	
-	/*
-	private double getMarketCapForCoin(String id, String date) {
+
+	public double getMarketCapForCoin(String id, String date) {
 		double marketCap = 0.0;
-		
+
 		JsonObject jsonObject = getDataForCrypto(id, date);
 		if (jsonObject != null) {
 			JsonObject marketData = jsonObject.get("market_data").getAsJsonObject();
 			JsonObject currentPrice = marketData.get("market_cap").getAsJsonObject();
 			marketCap = currentPrice.get("cad").getAsDouble();
 		}
-		
+
 		return marketCap;
 	}
-	
-	private double getVolumeForCoin(String id, String date) {
+
+	public double getVolumeForCoin(String id, String date) {
 		double volume = 0.0;
-		
+
 		JsonObject jsonObject = getDataForCrypto(id, date);
 		if (jsonObject != null) {
 			JsonObject marketData = jsonObject.get("market_data").getAsJsonObject();
 			JsonObject currentPrice = marketData.get("total_volume").getAsJsonObject();
 			volume = currentPrice.get("cad").getAsDouble();
 		}
-		
+
 		return volume;
 	}
-	*/
+
+	public static void main(String[] args) {
+		DataFetcher fetch = new DataFetcher();
+		double price = fetch.getPriceForCoin("ADA", "04/02/2022");
+		double marketCap = fetch.getMarketCapForCoin("ADA", "04/02/2022");
+		double volume = fetch.getVolumeForCoin("ADA", "04/02/2022");
+
+		System.out.println("Price of coin: " +price+ ",\nMarket Cap: " +marketCap+ ",\nCoin Volume: " +volume+);
+	}
 }
