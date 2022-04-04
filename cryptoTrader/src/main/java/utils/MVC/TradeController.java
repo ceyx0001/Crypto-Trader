@@ -9,11 +9,20 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Main class which controls trades and implements action listeners for buttons
+ *
+ * @author Jun Shao
+ * @since 2022-03-30
+ */
 public class TradeController implements ActionListener, TableModelListener {
     private TradeModel model;
     private TradeView view;
     private DataVisualizationCreator vc;
 
+    /**
+     * Constructor for TradeController class which initializes its fields
+     */
     public TradeController() {
         model = new TradeModel();
         vc = new DataVisualizationCreator();
@@ -24,6 +33,11 @@ public class TradeController implements ActionListener, TableModelListener {
         view.getTable().getModel().addTableModelListener(this);
     }
 
+    /**
+     * Method which takes inputs and executes their respective actions.
+     *
+     * @param e is an ActionEvent object
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -47,6 +61,10 @@ public class TradeController implements ActionListener, TableModelListener {
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void tableChanged(TableModelEvent e) {
         int row = e.getFirstRow();

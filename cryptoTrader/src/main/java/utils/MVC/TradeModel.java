@@ -15,6 +15,9 @@ import utils.broker.BrokerFactory;
 import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
+/**
+ * Class which
+ */
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
