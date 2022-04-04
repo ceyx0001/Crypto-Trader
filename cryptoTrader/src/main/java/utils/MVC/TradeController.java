@@ -52,6 +52,7 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
         int selectedRow = view.getTable().getSelectedRow();
         String name = null;
 
+        //action event parsing, determines what action was performed and executes its
         if ("refresh".equals(command)) {
             saveTable(dtm);
         } else if ("addTableRow".equals(command)) {
@@ -100,7 +101,7 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
      * Invokes the methods required to save the broker table
      * to the embedded database and start the trading process
      * 
-     * @param e the TableModelEvent
+     * @param dtm the current DefaultTableModel
      * @return void
      */
     private void saveTable(DefaultTableModel dtm) {

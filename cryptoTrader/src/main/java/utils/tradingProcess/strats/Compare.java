@@ -13,7 +13,7 @@ public class Compare {
      * @param left is the value on the left of the operand
      * @param right is the value on the right of the operand
      * @param operation is the operand used to compare values
-     * @return
+     * @return boolean representing whether the trade conditions are successful
      */
     protected boolean compare(double left, double right, String operation) {
         if (operation.equals("<")) {
@@ -32,7 +32,7 @@ public class Compare {
      * @param right2 is the value on the right of the second operand
      * @param op1 is the first operand
      * @param op2 is the second operand
-     * @return
+     * @return boolean representing whether a trade is successful
      */
     protected boolean compare(double left, double right, double left2, double right2, String op1, String op2) {
         boolean result = false;

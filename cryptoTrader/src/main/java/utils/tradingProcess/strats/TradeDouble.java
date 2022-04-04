@@ -19,6 +19,7 @@ public class TradeDouble extends Transaction {
      */
     @Override
     public void trade(Context c) {
+        //initializes variables
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date dateVar = new Date();
         String date = formatter.format(dateVar);
@@ -35,10 +36,12 @@ public class TradeDouble extends Transaction {
         String required1 = data1[0];
         String required2 = data2[0];
 
+        //check if transaction fails due to missing interested coins
         if (fail(interest, required1, required2)) {
             c.getTradeResult().addRow(name, strat, target, required1 + "," + required2, "Buy", "Null", "Null", date);
             System.out.println("added");
         } else {
+            //else, if not fail then compare conditions and add results
             String op1 = data1[1];
             String op2 = data2[1];
             double stratPrice1 = Double.valueOf(data1[2]);

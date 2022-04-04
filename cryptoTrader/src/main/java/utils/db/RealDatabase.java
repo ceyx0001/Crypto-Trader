@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Class which is used to access the real embedded database, is a part of the
- * proxy deisgn pattern as the actual database
+ * proxy design pattern as the actual database
  *
  * @author Jun Shao
  * @since 2022-04-04
@@ -17,7 +17,7 @@ public class RealDatabase extends Database {
 
     /**
      * Returns the instance of the embedded database
-     * @param Nothing
+     *
      * @return Database the instance of the embedded database
      */
     protected static RealDatabase getdb() {
@@ -29,8 +29,7 @@ public class RealDatabase extends Database {
 
     /**
      * Constructor for the Security object
-     * 
-     * @param Nothing
+     *
      * @return Nothing
      */
     private RealDatabase() {
@@ -39,8 +38,7 @@ public class RealDatabase extends Database {
 
     /**
      * Returns the connection to the embedded database
-     * 
-     * @param Nothing
+     *
      * @return Connection the connection to the embedded database
      */
     @Override
@@ -50,8 +48,7 @@ public class RealDatabase extends Database {
 
     /**
      * Creates the database for storing broker and user information
-     * 
-     * @param Nothing
+     *
      * @return void
      */
     @Override
@@ -81,8 +78,7 @@ public class RealDatabase extends Database {
 
     /**
      * Creates the connection to the embedded database
-     * 
-     * @param Nothing
+     *
      * @return Connection The connection to the embedded database
      */
     private Connection connect() {

@@ -97,14 +97,16 @@ public class TradeView extends JFrame implements Observer {
 		model.attach(this);
 		vc.attach(this);
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
+
+		//add perform trade button
 		trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 
-
+		//add perform trade button panel
 		JPanel south = new JPanel();
-		
 		south.add(trade);
 
+		//add trading broker table and its panel
 		table = new JTable(dtm);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table.setPreferredSize(new Dimension(600, 300));
@@ -139,6 +141,7 @@ public class TradeView extends JFrame implements Observer {
 		buttons.add(remRow);
 		east.add(buttons);
 
+		//west JPanel for graphics and results
 		JPanel west = new JPanel();
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(850, 650));

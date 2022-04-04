@@ -11,10 +11,17 @@ import java.util.HashMap;
  * @date 2022-03-30
  */
 public class PricesFacade {
+<<<<<<< HEAD
+=======
+    private DataFetcher df = new DataFetcher();
+    private CrytpoDictionary dict = new CrytpoDictionary();
+
+>>>>>>> cea630b42ae8c4da094d0714665879381c695c2d
     /**
      * Gets the price of a coin by invoking the required methods in the package
-     * @param neededCoins the list of coins required for a trading strategy
-     * @return HashMap<String, Double> the map of a coin to its price
+     * @param prices is a HashMap containing coin prices and their names
+     * @param dict is a HashMap which is used as a dictionary to convert between coin names, symbols, and ids
+     * @param required is an ArrayList which contains required coins for a transaction
      */
     public void getPrices(HashMap<String, Double> prices, HashMap<String, String> dict, ArrayList<String> required) {
         DataFetcher df = new DataFetcher();
@@ -26,6 +33,10 @@ public class PricesFacade {
         }
     }
 
+    /**
+     * Getter method which returns crypto-coin dictionary object
+     * @return CryptoDictionary object which represents a dictionary that converts ids, symbols, and names
+     */
     public HashMap<String, String> getDict() {
         CryptoList dict = new CryptoList();
         return dict.getCryptoDictionary();

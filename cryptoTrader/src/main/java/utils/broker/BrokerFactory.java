@@ -9,7 +9,7 @@ import utils.broker.factoryObjects.*;
  * Uses factory methods in order to create Broker objects without having
  * to specify the exact class of the Strategy creation
  * 
- * @author Anthony Tam
+ * @author Jun Shao, Anthony Tam
  * @date 2022-03-30
  */
 public class BrokerFactory {

@@ -35,7 +35,6 @@ public class TradeResult {
 
     /**
      * Accessor method which returns table as a 2D string array.
-     * @param Nothing
      * @return String[][] the table representing the TradeResult
      */
     public String[][] getTable() {

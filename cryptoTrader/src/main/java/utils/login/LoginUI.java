@@ -31,7 +31,6 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
     /**
      * Constructor method for the GUI
-     * @param Nothing
      * @return Nothing.
      */
     public LoginUI() {
@@ -164,7 +163,7 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
     /**
      * Handles the greying out the GUI buttons
-     * @param Nothing
+     *
      * @return void
      */
     private void update() {

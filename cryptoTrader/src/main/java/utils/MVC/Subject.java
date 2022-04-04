@@ -7,6 +7,7 @@ import java.util.List;
  * Class which is used to implement an observer design pattern and manage several observers
  *
  * @author Jun Shao
+ * @since 2022-04-02
  */
 public class Subject {
     private List<Observer> observers = new ArrayList<>();

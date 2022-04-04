@@ -25,9 +25,8 @@ public class TradeManager {
     private PricesFacade pf;
     
     /**
-     * Returns the instance of the TradeManager
-     * 
-     * @param Nothing
+     * Method which returns the instance of the TradeManager
+     *
      * @return TradeManager the instance of the TradeManager
      */
     public static TradeManager getInstance() {
@@ -39,9 +38,6 @@ public class TradeManager {
 
     /**
 	 * Constructor for CryptoDictionary object
-	 * 
-	 * @param Nothing
-	 * @return Nothing
 	 */
 	private TradeManager() {
         pf = new PricesFacade();
@@ -79,6 +75,7 @@ public class TradeManager {
         ArrayList<String> available = new ArrayList<String>(prices.keySet());
         Context c = null;
 
+        //main logic loop that processes trades for each broker in the broker hashmap
         for(Broker broker : brokers.values()){
             if (broker.getStrat().getAction().equals("buy single")) {
                 c = new Context(new TradeSingle(), broker, prices, tr, available);

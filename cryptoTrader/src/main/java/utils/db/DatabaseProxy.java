@@ -23,7 +23,7 @@ public class DatabaseProxy extends Database {
 
     /**
      * Getter method which returns a Connection object representing the connection to the database
-     * @return
+     * @return Connection object representing the connection to the database
      */
     @Override
     public Connection getConnection() {
