@@ -118,6 +118,6 @@ public class TradeModel extends Subject {
     }
 
     public String[][] getResults() {
-        return new TradeProcess().trade(brokers, neededCoins).getTable();
+        return new TradeProcess().trade(brokers).getTable();
     }
 }

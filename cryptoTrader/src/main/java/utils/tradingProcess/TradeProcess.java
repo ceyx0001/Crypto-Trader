@@ -6,8 +6,6 @@ import utils.tradingProcess.strats.TradeDouble;
 import utils.tradingProcess.strats.TradeSingle;
 
 import java.util.HashMap;
-import java.util.List;
-
 import utils.tradingProcess.strats.Context;
 
 /**
@@ -21,11 +19,10 @@ public class TradeProcess {
     /**
      * Main trading method which carries out calculations
      * @param brokers is a hashmap storing brokers
-     * @param neededCoins is a list of necessary coins
      * @return results of trade
      */
-    public TradeResult trade(HashMap<String, Broker> brokers, List<String> neededCoins){
-        HashMap<String, Double> prices = new PricesFacade().getPrices(neededCoins);
+    public TradeResult trade(HashMap<String, Broker> brokers){
+        HashMap<String, Double> prices = new PricesFacade().getPrices();
         TradeResult tr = new TradeResult();
         Context c = null;
 
