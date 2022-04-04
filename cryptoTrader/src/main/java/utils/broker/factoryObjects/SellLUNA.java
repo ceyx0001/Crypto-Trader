@@ -18,13 +18,13 @@ public class SellLUNA implements Strategy {
     private String[] populate() {
         String[] temp = {
             "BTC > 52000",
-            "ETC < 50",
+            "ETH < 50",
         };
         return temp;
     }
 
     @Override
-    public String getName() {
+    public String getType() {
         return name;
     }
 

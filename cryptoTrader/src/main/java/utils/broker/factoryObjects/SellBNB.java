@@ -17,13 +17,13 @@ public class SellBNB implements Strategy {
 
     private String[] populate() {
         String[] temp = {
-            "DOT > 22",
+            "BNB > 22",
         };
         return temp;
     }
 
     @Override
-    public String getName() {
+    public String getType() {
         return name;
     }
 

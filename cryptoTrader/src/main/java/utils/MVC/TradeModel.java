@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -14,7 +13,7 @@ import utils.broker.Broker;
 import utils.broker.BrokerFactory;
 import utils.db.Database;
 import utils.db.DatabaseProxy;
-import utils.tradingProcess.TradeProcess;
+import utils.tradingProcess.TradeManager;
 
 /**
  * The model component of the system that implements
@@ -27,7 +26,7 @@ import utils.tradingProcess.TradeProcess;
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
-    private List<String> neededCoins;
+    private ArrayList<String> neededCoins;
 
     /**
      * Constructor for TradeModel class which initializes its fields
@@ -53,7 +52,7 @@ public class TradeModel extends Subject {
             ResultSet rowsrs = getRows.executeQuery();
             rowsrs.next();
             int rows = rowsrs.getInt(1);
-            String headers[] = { "Trading Client", "Coin List", "Strategy Name" };
+            String headers[] = { "Broker name", "Coin List", "Strategy Name" };
             String data[][] = new String[rows][3];
 
             int i = 0;
@@ -64,7 +63,7 @@ public class TradeModel extends Subject {
                 data[i][1] = rs.getString("coins");
                 data[i][2] = strat;
                 brokers.put(name, newBroker(name, rs.getString("coins"), strat));
-                brokers.get(name).getStrat().getName();
+                brokers.get(name).getStrat().getType();
                 i++;
             }
 
@@ -80,7 +79,7 @@ public class TradeModel extends Subject {
         return brokers;
     }
 
-    public List<String> getNeededCoins() {
+    public ArrayList<String> getNeededCoins() {
         return neededCoins;
     }
 
@@ -91,8 +90,11 @@ public class TradeModel extends Subject {
 
             for (String key : brokers.keySet()) {
                 s.setString(1, key);
-                s.setString(2, brokers.get(key).getCoins().toString().replaceAll("\\[|\\]", "").toUpperCase());
-                s.setString(3, brokers.get(key).getStrat().getName());
+                Broker b = brokers.get(key);
+                String coins = b.getCoins().toString().replaceAll("\\{|\\}|=|\\s|\\W", "").toUpperCase();
+                coins = coins.replace("NULL", "");
+                s.setString(2, coins);
+                s.setString(3, b.getStrat().getType());
                 s.execute();
             }
         } catch (SQLException e) {
@@ -108,7 +110,7 @@ public class TradeModel extends Subject {
             s.execute();
             brokers.remove(name);
         } catch (SQLException e) {
-            System.out.println("saveBrokers: " + e.getMessage());
+            System.out.println("removeBrokers: " + e.getMessage());
         }
     }
 
@@ -118,6 +120,6 @@ public class TradeModel extends Subject {
     }
 
     public String[][] getResults() {
-        return new TradeProcess().trade(brokers).getTable();
+        return TradeManager.getInstance(neededCoins).trade(brokers).getTable();
     }
 }

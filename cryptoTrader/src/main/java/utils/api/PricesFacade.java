@@ -1,7 +1,7 @@
 package utils.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * This class implements the facade for the methods that
@@ -11,21 +11,23 @@ import java.util.List;
  * @date 2022-03-30
  */
 public class PricesFacade {
-    private DataFetcher df = new DataFetcher();
-    private CryptoList dict = new CryptoList();
-
     /**
      * Gets the price of a coin by invoking the required methods in the package
      * @param neededCoins the list of coins required for a trading strategy
      * @return HashMap<String, Double> the map of a coin to its price
      */
-    public HashMap<String, Double> getPrices() {
-        HashMap<String, Double> prices = new HashMap<String, Double>();
-        List<String> availableCryptos = dict.getCryptoList();
-        for (String id : availableCryptos) {
-            String fullName = dict.getCryptoDictionary().get(id);
-            prices.put(id, df.getPriceForCoin(fullName));
+    public void getPrices(HashMap<String, Double> prices, HashMap<String, String> dict, ArrayList<String> required) {
+        DataFetcher df = new DataFetcher();
+        for (String sym : required) {
+            String id = dict.get(sym);
+            if (prices.get(sym) == null) {
+                prices.put(sym, df.getPriceForCoin(id));
+            }
         }
-        return prices;
+    }
+
+    public HashMap<String, String> getDict() {
+        CryptoList dict = new CryptoList();
+        return dict.getCryptoDictionary();
     }
 }

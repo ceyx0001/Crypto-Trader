@@ -2,6 +2,8 @@ package utils.api;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -24,19 +26,22 @@ public class DataFetcher {
 	 * @param id the coin's name
 	 * @return JsonObject the coin's data
 	 */
-	protected JsonObject getDataForCrypto(String id) {
+	protected JsonObject getDataForCrypto(String id, HttpURLConnection conn, URL url) {
 
-		String urlString = String.format(
-				"https://api.coingecko.com/api/v3/coins/%s/history?date=%s", id, getDate());
-		
-		try {
-			URL url = new URL(urlString);
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("GET");
-			int responsecode = conn.getResponseCode();
+			int responsecode = 0;
+			try {
+				responsecode = conn.getResponseCode();
+			} catch (IOException e) {
+				System.out.println("Error getting response code");
+			}
 			if (responsecode == 200) {
 				String inline = "";
-				Scanner sc = new Scanner(url.openStream());
+				Scanner sc = null;
+				try {
+					sc = new Scanner(url.openStream());
+				} catch (IOException e) {
+					System.out.println("Error opening stream: " + e.getMessage());
+				}
 				while (sc.hasNext()) {
 					inline += sc.nextLine();
 				}
@@ -47,9 +52,7 @@ public class DataFetcher {
 				System.out.println("could not find id for " + id);
 			}
 
-		} catch (IOException e) {
-			System.out.println("Something went wrong with the API call.");
-		}
+		
 		return null;
 	}
 
@@ -61,8 +64,27 @@ public class DataFetcher {
 	 */
 	protected double getPriceForCoin(String id) {
 		double price = 0.0;
+		String urlString = String.format(
+				"https://api.coingecko.com/api/v3/coins/%s/history?date=%s", id, getDate());
+		URL url = null;
+		try {
+			url = new URL(urlString);
+		} catch (MalformedURLException e) {
+			System.out.println("Malformed url while getting price for coin");
+		}
+		HttpURLConnection conn = null;
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+		} catch (IOException e) {
+			System.out.println("IO exception while opening connection");
+		}
+		try {
+			conn.setRequestMethod("GET");
+		} catch (ProtocolException e) {
+			System.out.println("Protocol exception while setting request method");
+		}
 
-		JsonObject jsonObject = getDataForCrypto(id);
+		JsonObject jsonObject = getDataForCrypto(id, conn, url);
 		if (jsonObject != null) {
 			JsonObject marketData = jsonObject.get("market_data").getAsJsonObject();
 			JsonObject currentPrice = marketData.get("current_price").getAsJsonObject();

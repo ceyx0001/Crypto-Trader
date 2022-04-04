@@ -29,7 +29,7 @@ import javax.swing.table.TableColumn;
 public class TradeView extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 	private TradeModel model;
-	private DataVisualizationCreator vc;
+	private GraphCreator vc;
 
 	private JPanel stats;
 	private JButton trade;
@@ -62,7 +62,11 @@ public class TradeView extends JFrame implements Observer {
 		return dtm;
 	}
 
-	protected TradeView(DefaultTableModel dtm, TradeModel model, DataVisualizationCreator vc) {
+	protected void emptyRowError(int row) {
+		JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (row + 1));
+	}
+
+	protected TradeView(DefaultTableModel dtm, TradeModel model, GraphCreator vc) {
 		// Set window title
 		super("Crypto Trading Tool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,43 +74,6 @@ public class TradeView extends JFrame implements Observer {
 		this.vc = vc;
 		model.attach(this);
 		vc.attach(this);
-
-		// Set top bar
-
-
-		JPanel north = new JPanel();
-
-//		north.add(strategyList);
-
-		// Set bottom bar
-//		JLabel from = new JLabel("From");
-//		UtilDateModel dateModel = new UtilDateModel();
-//		Properties p = new Properties();
-//		p.put("text.today", "Today");
-//		p.put("text.month", "Month");
-//		p.put("text.year", "Year");
-//		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-//		@SuppressWarnings("serial")
-//		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new AbstractFormatter() {
-//			private String datePatern = "dd/MM/yyyy";
-//
-//			private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
-//
-//			@Override
-//			public Object stringToValue(String text) throws ParseException {
-//				return dateFormatter.parseObject(text);
-//			}
-//
-//			@Override
-//			public String valueToString(Object value) throws ParseException {
-//				if (value != null) {
-//					Calendar cal = (Calendar) value;
-//					return dateFormatter.format(cal.getTime());
-//				}
-//
-//				return "";
-//			}
-//		});
 		this.dtm = dtm;
 		trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
@@ -117,9 +84,10 @@ public class TradeView extends JFrame implements Observer {
 		south.add(trade);
 
 		table = new JTable(dtm);
-		//table.setPreferredSize(new Dimension(600, 300));
+		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+		table.setPreferredSize(new Dimension(600, 300));
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
+		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Broker Table",
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
@@ -142,20 +110,16 @@ public class TradeView extends JFrame implements Observer {
 		
 
 		JPanel east = new JPanel();
-//		east.setLayout();
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-//		east.add(table);
 		east.add(scrollPane);
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 		buttons.add(addRow);
 		buttons.add(remRow);
 		east.add(buttons);
-//		east.add(selectedTickerListLabel);
-//		east.add(selectedTickersScrollPane);
 
-		// Set charts region
 		JPanel west = new JPanel();
+		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(850, 650));
 		stats = new JPanel();
 		stats.setLayout(new GridLayout(2, 2));
@@ -165,7 +129,6 @@ public class TradeView extends JFrame implements Observer {
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(west, BorderLayout.CENTER);
 		getContentPane().add(south, BorderLayout.SOUTH);
-//		getContentPane().add(west, BorderLayout.WEST);
 		pack();
 		setVisible(true);
 	}

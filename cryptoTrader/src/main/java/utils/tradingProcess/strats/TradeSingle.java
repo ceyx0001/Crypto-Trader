@@ -4,9 +4,9 @@ import utils.broker.Broker;
 import utils.tradingProcess.TradeResult;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Class which is used to process trades with a single operand
@@ -30,26 +30,26 @@ public class TradeSingle extends Transaction {
         HashMap<String, Double> prices = c.getPrices();
         Broker b = c.getBroker();
         String name = b.getName();
-        String strat = b.getStrat().getName();
-        List<String> interest = b.getCoins();
+        String strat = b.getStrat().getType();
+        ArrayList<String> interest = new ArrayList<String>(b.getCoins().keySet());
         String[] conditions = b.getStrat().getConditions();
         String target = b.getStrat().getTarget();
         int amnt = b.getStrat().getAmntBought();
 
         String[] data = conditions[0].split(" ");
-        String coinName = data[0];
+        String required = data[0];
 
-        if (fail(interest, coinName)) {
-            tr.addRow(name, strat, target, "Buy", "Null", "Null", date);
-        }
+        if (fail(interest, required)) {
+            tr.addRow(name, strat, target, required, "Buy", "Null", "Null", date);
+        } else {
+            String op = data[1];
+            double stratPrice = Double.valueOf(data[2]);
+            double realPrice = prices.get(required);
+            double targetPrice = prices.get(target);
 
-        String op = data[1];
-        double stratPrice = Double.valueOf(data[2]);
-        double realPrice = prices.get(coinName);
-        double targetPrice = prices.get(target);
-
-        if (new Compare().compare(realPrice, stratPrice, op)) {
-            tr.addRow(name, strat, target, "Buy", "" + amnt, "" + targetPrice, date);
+            if (new Compare().compare(realPrice, stratPrice, op)) {
+                tr.addRow(name, strat, target, required, "Buy", "" + amnt, "" + targetPrice, date);
+            }
         }
     }
 }

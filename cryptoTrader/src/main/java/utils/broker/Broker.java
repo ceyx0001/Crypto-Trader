@@ -1,5 +1,6 @@
 package utils.broker;
 
+import java.util.HashMap;
 import java.util.List;
 
 import utils.broker.factoryObjects.Strategy;
@@ -12,7 +13,7 @@ import utils.broker.factoryObjects.Strategy;
  */
 public class Broker {
     private String name;
-    private List<String> coins;
+    private HashMap<String, Double> coins;
     private Strategy strategy;
 
     /**
@@ -23,12 +24,16 @@ public class Broker {
      */
     public Broker(String name, List<String> coins, Strategy strategy) {
         this.name = name;
-        this.coins = coins;
+        this.coins = new HashMap<String, Double>();
+        for (String s : coins) {
+            this.coins.put(s, null);
+        }
         this.strategy = strategy;
     }
 
     /**
      * Gets the name of the Broker object
+     * @param Nothing
      * @return String the name of the Broker object
      */
     public String getName() {
@@ -37,17 +42,28 @@ public class Broker {
 
     /**
      * Gets the coins of the Broker object
-     * @return List<String> the coins of the Broker object
+     * @param Nothing
+     * @return HashMap<String, Double> the coins of the Broker object
      */
-    public List<String> getCoins() {
+    public HashMap<String, Double> getCoins() {
         return coins;
     }
 
     /**
      * Gets the strategy of the Broker object
+     * @param Nothing
      * @return Strategy the strategy of the Broker object
      */
     public Strategy getStrat() {
         return strategy;
+    }
+
+    /**
+     * Notifies the broker of the coin prices
+     * @param coin the name of the coin
+     * @return void
+     */
+    public void setPrice(String coin, double price) {
+        coins.put(coin, price);
     }
 }

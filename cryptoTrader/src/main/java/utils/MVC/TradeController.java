@@ -2,8 +2,6 @@ package utils.MVC;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -18,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class TradeController implements ActionListener, TableModelListener {
     private TradeModel model;
     private TradeView view;
-    private DataVisualizationCreator vc;
+    private GraphCreator vc;
 
     /**
      * Constructor for TradeController class which initializes its fields
@@ -28,7 +26,7 @@ public class TradeController implements ActionListener, TableModelListener {
      */
     public TradeController() {
         model = new TradeModel();
-        vc = new DataVisualizationCreator();
+        vc = new GraphCreator();
         view = new TradeView(model.getBrokersTable(), model, vc);
         view.getTradeButton().addActionListener(this);
         view.getRemButton().addActionListener(this);
@@ -96,26 +94,32 @@ public class TradeController implements ActionListener, TableModelListener {
         for (int count = 0; count < dtm.getRowCount(); count++) {
             Object traderObject = dtm.getValueAt(count, 0);
             if (traderObject == null) {
-                JOptionPane.showMessageDialog(view, "please fill in Trader name on line " + (count + 1));
+                view.emptyRowError(count);
                 return;
             }
-            String name = traderObject.toString();
             Object coinObject = dtm.getValueAt(count, 1);
             if (coinObject == null) {
-                JOptionPane.showMessageDialog(view, "please fill in cryptocoin list on line " + (count + 1));
+                view.emptyRowError(count);
+                return;
+            }
+            Object strategyObject = dtm.getValueAt(count, 2);
+            if (strategyObject == null) {
+                view.emptyRowError(count);
                 return;
             }
 
-            String coins = coinObject.toString().replaceAll("\\[|\\]|\\s", "");
-            Object strategyObject = dtm.getValueAt(count, 2);
-            if (strategyObject == null) {
-                JOptionPane.showMessageDialog(view, "please fill in strategy name on line " + (count + 1));
-                return;
-            }
-            String strat = strategyObject.toString();
-            model.getBrokers().put(name, model.newBroker(name, coins, strat));
-            model.getNeededCoins().addAll(Arrays.asList(coins.split(",")));
-            //System.out.println(model.getBrokers().get(name).getStrat().printStrat());
+            String coins = coinObject.toString().replaceAll("\\{|\\}|=|\\s", "");
+          
+                String name = traderObject.toString();
+                String strat = strategyObject.toString();
+                model.getBrokers().put(name, model.newBroker(name, coins, strat));
+                String target = model.getBrokers().get(name).getStrat().getTarget();
+                model.getNeededCoins().add(target);
+                String[] temp = coins.split(",");
+                for (int i = 0; i < temp.length; i++) {
+                    model.getNeededCoins().add(temp[i]);
+                }
+            
         }
 
         model.notifyObservers();

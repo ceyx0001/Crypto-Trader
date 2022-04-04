@@ -24,7 +24,7 @@ public class BuyADA implements Strategy {
     }
 
     @Override
-    public String getName() {
+    public String getType() {
         return name;
     }
 

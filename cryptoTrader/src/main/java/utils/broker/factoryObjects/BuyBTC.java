@@ -17,13 +17,13 @@ public class BuyBTC implements Strategy {
 
     private String[] populate() {
         String[] temp = {
-                "BTC < 55000"
+                "BTC < 60000"
         };
         return temp;
     }
 
     @Override
-    public String getName() {
+    public String getType() {
         return name;
     }
 

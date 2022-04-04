@@ -3,9 +3,7 @@ package utils.api;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 import com.google.gson.JsonArray;
@@ -21,7 +19,6 @@ import com.google.gson.JsonParser;
  */
 public class CryptoList {
 	private HashMap<String, String> cryptoDictionary;
-	private List<String> availableCryptos;
 
 	/**
 	 * Constructor for CryptoDictionary object
@@ -30,7 +27,6 @@ public class CryptoList {
 	 */
 	protected CryptoList() {
 		cryptoDictionary = new HashMap<String, String>();
-		availableCryptos = new ArrayList<String>();
 		findAvailableCryptos();
 	}
 	
@@ -64,7 +60,6 @@ public class CryptoList {
 					String name = object.get("id").getAsString().toLowerCase();
 					String symbol = object.get("symbol").getAsString().toUpperCase();
 					cryptoDictionary.put(symbol, name);
-					availableCryptos.add(name);
 				}
 			}
 
@@ -80,15 +75,5 @@ public class CryptoList {
 	 */
 	protected HashMap<String, String> getCryptoDictionary() {
 		return cryptoDictionary;
-	}
-
-	/**
-	 * Gets the lsit of available crypto coins
-	 * 
-	 * @param Nothing
-	 * @return List<String> the list of coins
-	 */
-	protected List<String> getCryptoList() {
-		return availableCryptos;
 	}
 }

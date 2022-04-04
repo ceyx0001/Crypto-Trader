@@ -1,7 +1,7 @@
 package utils.broker.factoryObjects;
 
 public interface Strategy {
-    String getName();
+    String getType();
     String getAction();
     String[] getConditions();
     String getTarget();
