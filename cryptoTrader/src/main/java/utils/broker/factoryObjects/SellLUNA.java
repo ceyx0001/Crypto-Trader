@@ -10,7 +10,7 @@ public class SellLUNA implements Strategy {
     public SellLUNA() {
         name = "sell LUNA";
         action = "sell double";
-        target = "LUNA";
+        target = "Terra";
         amnt = 60;
         conditions = populate();
     }
