@@ -17,13 +17,24 @@ import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
 /**
- * Class which
+ * The model component of the system that implements
+ * the data operations required to save/retrieve brokers to/from the
+ * embedded database and initiates the trading process
+ * 
+ * @author Jun Shao
+ * @since 2022-03-30
  */
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
     private List<String> neededCoins;
 
+    /**
+     * Constructor for TradeModel class which initializes its fields
+     * 
+     * @param Nothing
+     * @return Nothing
+     */
     public TradeModel() {
         Database proxy = new DatabaseProxy();
         proxy.init();
