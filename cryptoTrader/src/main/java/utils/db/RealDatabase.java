@@ -97,7 +97,7 @@ public class RealDatabase extends Database {
     private Connection connect() {
         Connection c = null;
         try {
-            c = DriverManager.getConnection("jdbc:sqlite:cryptoTrader/src/main/java/utils/db/local.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/java/utils/db/local.db");
         } catch (SQLException e) {
             System.out.println("Establishing connection failed: " + e.getMessage());
         }
