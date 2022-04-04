@@ -5,12 +5,26 @@ import java.util.HashMap;
 import utils.broker.Broker;
 import utils.tradingProcess.TradeResult;
 
+/**
+ * Class which acts as context for transactions to modify their behaviour on run-time
+ *
+ * @author Jun Shao
+ * @since 2022-04-03
+ */
 public class Context {
     private Transaction transaction;
     private TradeResult tr;
     private Broker b;
     private HashMap<String, Double> prices;
 
+    /**
+     * Constructor method for the Context class which assigns variables values given by parameters.
+     *
+     * @param transaction is a transaction object
+     * @param b is a broker object which represents a trading broker
+     * @param prices is a hashmap which stores prices for coins
+     * @param tr is an object which represents the results of a trade
+     */
     public Context(Transaction transaction, Broker b, HashMap<String, Double> prices, TradeResult tr) {
         this.transaction = transaction;
         this.b = b;
@@ -18,18 +32,36 @@ public class Context {
         this.tr = tr;
     }
 
+    /**
+     * Getter method which returns broker object
+     *
+     * @return broker object which represents trade broker
+     */
     public Broker getBroker() {
         return b;
     }
 
+    /**
+     * Getter method which returns hashmap of coin prices
+     *
+     * @return hashmap of coin prices
+     */
     public HashMap<String, Double> getPrices() {
         return prices;
     }
 
+    /**
+     * Getter method which returns trade results
+     *
+     * @return trade results
+     */
     public TradeResult getTradeResult() {
         return tr;
     }
 
+    /**
+     * Method which executes trade with given context
+     */
     public void execute() {
         transaction.trade(this);
     }
