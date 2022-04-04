@@ -13,7 +13,8 @@ import utils.broker.factoryObjects.Strategy;
  */
 public class Broker {
     private String name;
-    private HashMap<String, Double> coins;
+    private HashMap<String, Double> interestPrices;
+    private String targetPrice;
     private Strategy strategy;
 
     /**
@@ -24,11 +25,12 @@ public class Broker {
      */
     public Broker(String name, List<String> coins, Strategy strategy) {
         this.name = name;
-        this.coins = new HashMap<String, Double>();
+        interestPrices = new HashMap<String, Double>();
         for (String s : coins) {
-            this.coins.put(s, null);
+            interestPrices.put(s, null);
         }
         this.strategy = strategy;
+        targetPrice = null;
     }
 
     /**
@@ -45,8 +47,8 @@ public class Broker {
      * @param Nothing
      * @return HashMap<String, Double> the coins of the Broker object
      */
-    public HashMap<String, Double> getCoins() {
-        return coins;
+    public HashMap<String, Double> getInterest() {
+        return interestPrices;
     }
 
     /**
@@ -63,7 +65,27 @@ public class Broker {
      * @param coin the name of the coin
      * @return void
      */
-    public void setPrice(String coin, double price) {
-        coins.put(coin, price);
+    public void setInterestPrice(String coin, double price) {
+        interestPrices.put(coin, price);
+    }
+
+    /**
+     * Notifies the broker of the CAD they used
+     * 
+     * @param coin the name of the coin
+     * @return void
+     */
+    public void setPrice(double price) {
+        targetPrice = Double.toString(price);
+    }
+
+    /**
+     * Gets the amount of CAD the broker used
+     * 
+     * @param coin the name of the coin
+     * @return void
+     */
+    public String getPrice() {
+        return targetPrice;
     }
 }

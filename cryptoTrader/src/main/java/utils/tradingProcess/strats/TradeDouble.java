@@ -30,7 +30,7 @@ public class TradeDouble extends Transaction {
         Broker b = c.getBroker();
         String name = b.getName();
         String strat = b.getStrat().getType();
-        ArrayList<String> interest = new ArrayList<String>(b.getCoins().keySet());
+        ArrayList<String> interest = new ArrayList<String>(b.getInterest().keySet());
         String[] conditions = b.getStrat().getConditions();
         String target = b.getStrat().getTarget();
         int amnt = b.getStrat().getAmntBought();

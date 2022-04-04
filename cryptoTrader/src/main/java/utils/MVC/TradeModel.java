@@ -2,12 +2,12 @@ package utils.MVC;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
-
-import javax.swing.table.DefaultTableModel;
 
 import utils.broker.Broker;
 import utils.broker.BrokerFactory;
@@ -26,7 +26,12 @@ import utils.tradingProcess.TradeManager;
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
+    private ArrayList<String> brokersInTable;
+    BrokerFactory factory;
     private ArrayList<String> neededCoins;
+    private HashMap<String, HashMap<String, Integer>> data;
+    private String[][] dataTable;
+    private boolean missingInfo;
 
     /**
      * Constructor for TradeModel class which initializes its fields
@@ -36,90 +41,120 @@ public class TradeModel extends Subject {
      */
     public TradeModel() {
         Database proxy = new DatabaseProxy();
+        factory = new BrokerFactory();
         proxy.init();
         connection = proxy.getConnection();
         brokers = new HashMap<String, Broker>();
+        brokersInTable = new ArrayList<String>();
         neededCoins = new ArrayList<String>();
-    }
-
-    public DefaultTableModel getBrokersTable() {
-        try {
-            String command = "SELECT * FROM Brokers";
-            String rowsCommand = "SELECT COUNT(1) FROM Brokers";
-            PreparedStatement getBrokers = connection.prepareStatement(command);
-            PreparedStatement getRows = connection.prepareStatement(rowsCommand);
-            ResultSet rs = getBrokers.executeQuery();
-            ResultSet rowsrs = getRows.executeQuery();
-            rowsrs.next();
-            int rows = rowsrs.getInt(1);
-            String headers[] = { "Broker name", "Coin List", "Strategy Name" };
-            String data[][] = new String[rows][3];
-
-            int i = 0;
-            while (rs.next()) {
-                String name = rs.getString("id");
-                String strat = rs.getString("strat");
-                data[i][0] = name;
-                data[i][1] = rs.getString("coins");
-                data[i][2] = strat;
-                brokers.put(name, newBroker(name, rs.getString("coins"), strat));
-                brokers.get(name).getStrat().getType();
-                i++;
-            }
-
-            return new DefaultTableModel(data, headers);
-        } catch (SQLException e) {
-            System.out.println("getBrokersTable: " + e.getMessage());
-            System.exit(0);
-        }
-        return null;
+        data = new HashMap<String, HashMap<String, Integer>>();
+        missingInfo = false;
     }
 
     public HashMap<String, Broker> getBrokers() {
         return brokers;
     }
 
-    public ArrayList<String> getNeededCoins() {
+    public ArrayList<String> getRequiredCoins() {
         return neededCoins;
     }
 
-    public void saveBrokers() {
+    public void logTrade() {
         try {
-            String insert = "INSERT OR REPLACE INTO Brokers(id, coins, strat) VALUES(?,?,?)";
+            String insert = "INSERT OR REPLACE INTO Brokers(name, strat, target, action, amnt, price, date, actionAmnt) VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement s = connection.prepareStatement(insert);
 
-            for (String key : brokers.keySet()) {
-                s.setString(1, key);
-                Broker b = brokers.get(key);
-                String coins = b.getCoins().toString().replaceAll("\\{|\\}|=|\\s|\\W", "").toUpperCase();
-                coins = coins.replace("NULL", "");
-                s.setString(2, coins);
-                s.setString(3, b.getStrat().getType());
+            for (String name : brokers.keySet()) {
+                String strat = brokers.get(name).getStrat().getType();
+                String target = brokers.get(name).getStrat().getTarget();
+                String action = brokers.get(name).getStrat().getAction();
+                String amnt = String.valueOf(brokers.get(name).getStrat().getAmntBought());
+                String price = brokers.get(name).getPrice();
+                String date = getDate();
+                String actionAmnt = Integer.toString(data.get(name).get(strat));
+
+                s.setString(1, name);
+                s.setString(2, strat);
+                s.setString(3, target);
+                s.setString(4, action);
+                s.setString(5, amnt);
+                s.setString(6, price);
+                s.setString(7, date);
+                s.setString(8, actionAmnt);
                 s.execute();
             }
         } catch (SQLException e) {
-            System.out.println("saveBrokers: " + e.getMessage());
+            System.out.println("saveData: " + e.getMessage());
         }
+    }
+
+    /**
+     * Gets today's calendar day
+     * 
+     * @return String today's date
+     */
+    private String getDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateVar = new Date();
+        return formatter.format(dateVar);
     }
 
     public void removeBroker(String name) {
-        try {
-            String insert = "DELETE FROM Brokers WHERE id = ?";
-            PreparedStatement s = connection.prepareStatement(insert);
-            s.setString(1, name);
-            s.execute();
-            brokers.remove(name);
-        } catch (SQLException e) {
-            System.out.println("removeBrokers: " + e.getMessage());
-        }
+        brokers.remove(name);
     }
 
-    public Broker newBroker(String name, String coins, String strat) {
-        BrokerFactory factory = new BrokerFactory();
+    protected Broker newBroker(String name, String coins, String strat) {
         return factory.getBroker(name, coins, strat);
     }
 
-    public String[][] getResults() {
-        return TradeManager.getInstance(neededCoins).trade(brokers).getTable();
+    private void tally(String broker, String strat) {
+        HashMap<String, Integer> brokerStrats;
+        if (data.get(broker) == null) {
+            brokerStrats = new HashMap<String, Integer>();
+            brokerStrats.put(strat, 1);
+            data.put(broker, brokerStrats);
+        } else {
+            brokerStrats = data.get(broker);
+            brokerStrats.put(strat, brokerStrats.get(strat) + 1);
+            data.put(broker, brokerStrats);
+        }
+    }
+
+    protected void setDataMap() {
+        missingInfo = false;
+        for (int row = 0; row < dataTable.length; row++) {
+            tally(dataTable[row][0], dataTable[row][1]);
+            if (dataTable[row][5].equals("Null")) {
+                missingInfo = true;
+            }
+        }
+    }
+
+    protected HashMap<String, HashMap<String, Integer>> getDataMap() {
+        return data;
+    }
+
+    protected String[][] getDataTable() {
+        return dataTable;
+    }
+
+    protected void setDataTable() {
+        dataTable = TradeManager.getInstance(neededCoins).trade(brokers).getTable();
+    }
+
+    protected boolean hasDupe(String broker) {
+        return brokersInTable.contains(broker);
+    }
+
+    protected void addBrokerInTable(String name) {
+        brokersInTable.add(name);
+    }
+
+    protected void removeBrokerInTable(String name) {
+        brokersInTable.remove(name);
+    }
+
+    protected boolean isMissingInfo() {
+        return missingInfo;
     }
 }

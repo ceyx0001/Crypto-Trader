@@ -1,6 +1,7 @@
 package utils.tradingProcess;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,9 +41,9 @@ public class TradeResult {
      */
     public String[][] getTable() {
         int rows = table.size();
-        String[][] result = new String[rows][7];
+        String[][] result = new String[rows][8];
         for (int i = 0; i < rows; i++) {
-            result[i] = table.get(0);
+            result[i] = table.get(i);
         }
         return result;
     }

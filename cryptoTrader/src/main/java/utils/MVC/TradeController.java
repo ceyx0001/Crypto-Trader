@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class TradeController implements ActionListener, TableModelListener {
     private TradeModel model;
     private TradeView view;
-    private GraphCreator vc;
+    private GraphCreator gc;
 
     /**
      * Constructor for TradeController class which initializes its fields
@@ -26,8 +26,8 @@ public class TradeController implements ActionListener, TableModelListener {
      */
     public TradeController() {
         model = new TradeModel();
-        vc = new GraphCreator();
-        view = new TradeView(model.getBrokersTable(), model, vc);
+        gc = new GraphCreator();
+        view = new TradeView(model, gc);
         view.getTradeButton().addActionListener(this);
         view.getRemButton().addActionListener(this);
         view.getAddButton().addActionListener(this);
@@ -44,29 +44,29 @@ public class TradeController implements ActionListener, TableModelListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         DefaultTableModel dtm = view.getDTM();
+        int selectedRow = view.getTable().getSelectedRow();
+        Object val = view.getTable().getValueAt(selectedRow, 0);
+        String name = val.toString();
 
         if ("refresh".equals(command)) {
             saveTable(dtm);
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
+            model.addBrokerInTable(name);
         } else if ("remTableRow".equals(command)) {
-            int selectedRow = view.getTable().getSelectedRow();
             if (selectedRow != -1) {
-                Object val = view.getTable().getValueAt(selectedRow, 0);
-                String name;
-                if (val != null) {
-                    name = val.toString();
-                    model.removeBroker(name);
-                }
+                name = val.toString();
+                model.removeBroker(name);
+                model.removeBrokerInTable(name);
                 dtm.removeRow(selectedRow);
             }
         }
     }
 
     /**
-     * Checks if a broker is a duplicate after a table cell was edited
+     * Checks if a broker already exists after a table cell was edited
      * 
-     * @param e the TableModelEvent 
+     * @param e the TableModelEvent
      * @return void
      */
     @Override
@@ -75,7 +75,7 @@ public class TradeController implements ActionListener, TableModelListener {
         int col = e.getColumn();
         if (col == 0) {
             String name = view.getTable().getModel().getValueAt(row, col).toString();
-            if (model.getBrokers().containsKey(name)) {
+            if (model.hasDupe(name)) {
                 JOptionPane.showConfirmDialog(null, name + " already exists.",
                         "Duplicate Broker", JOptionPane.DEFAULT_OPTION);
                 view.getTable().getModel().setValueAt("", row, col);
@@ -94,36 +94,35 @@ public class TradeController implements ActionListener, TableModelListener {
         for (int count = 0; count < dtm.getRowCount(); count++) {
             Object traderObject = dtm.getValueAt(count, 0);
             if (traderObject == null) {
-                view.emptyRowError(count);
+                view.emptyRowError(count, "broker name");
                 return;
             }
             Object coinObject = dtm.getValueAt(count, 1);
-            if (coinObject == null) {
-                view.emptyRowError(count);
+            if (coinObject == null || coinObject.equals("")) {
+                view.emptyRowError(count, "coin list");
                 return;
             }
             Object strategyObject = dtm.getValueAt(count, 2);
             if (strategyObject == null) {
-                view.emptyRowError(count);
+                view.emptyRowError(count, "strategy name");
                 return;
             }
-
             String coins = coinObject.toString().replaceAll("\\{|\\}|=|\\s", "");
-          
-                String name = traderObject.toString();
-                String strat = strategyObject.toString();
-                model.getBrokers().put(name, model.newBroker(name, coins, strat));
-                String target = model.getBrokers().get(name).getStrat().getTarget();
-                model.getNeededCoins().add(target);
-                String[] temp = coins.split(",");
-                for (int i = 0; i < temp.length; i++) {
-                    model.getNeededCoins().add(temp[i]);
-                }
-            
+            String name = traderObject.toString();
+            String strat = strategyObject.toString();
+            model.getBrokers().put(name, model.newBroker(name, coins, strat));
+            String target = model.getBrokers().get(name).getStrat().getTarget();
+            model.getRequiredCoins().add(target);
+            String[] temp = coins.split(",");
+            for (int i = 0; i < temp.length; i++) {
+                model.getRequiredCoins().add(temp[i]);
+            }
         }
 
         model.notifyObservers();
-        vc.createCharts(model.getResults());
-        model.saveBrokers();
+        model.setDataTable();
+        model.setDataMap();
+        gc.createCharts(model.getDataMap(), model.getDataTable(), model.isMissingInfo());
+        model.logTrade();
     }
 }

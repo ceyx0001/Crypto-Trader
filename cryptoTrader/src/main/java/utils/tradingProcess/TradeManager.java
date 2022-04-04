@@ -56,11 +56,15 @@ public class TradeManager {
      * @return TradeResult results of the trade
      */
     public TradeResult trade(HashMap<String, Broker> brokers) {
-        pf.getPrices(prices, dict, required);
         for (String name : brokers.keySet()) {
-            for (String coin : prices.keySet()) {
-                if (brokers.get(coin) != null) {
-                    brokers.get(name).setPrice(coin, prices.get(coin));
+            Broker b = brokers.get(name);
+            prices.put(b.getStrat().getTarget(), null);
+            for (String coin : b.getInterest().keySet()) {
+                pf.getPrices(prices, dict, required);
+                Double targetCoinPrice = prices.get(b.getStrat().getTarget());
+                b.setPrice(targetCoinPrice);
+                if (brokers.get(name) != null) {
+                    b.setInterestPrice(coin, prices.get(coin));
                 }
             }
         }
@@ -84,6 +88,7 @@ public class TradeManager {
         if (c == null) {
             System.out.println("Error creating context");
         }
+        
         return tr;
     }
 }

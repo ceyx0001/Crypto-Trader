@@ -52,9 +52,14 @@ public class RealDatabase extends Database {
         try {
             if (connection != null) {
                 String command = "CREATE TABLE IF NOT EXISTS Brokers ("
-                        + "	id TEXT UNIQUE NOT NULL,"
-                        + "	coins TEXT NOT NULL,"
-                        + "	strat TEXT);";
+                        + "	name TEXT NOT NULL,"
+                        + "	strat TEXT NOT NULL,"
+                        + "	target TEXT NOT NULL,"
+                        + "	action TEXT NOT NULL,"
+                        + "	amnt TEXT NOT NULL,"
+                        + "	price TEXT NOT NULL,"
+                        + "	date TEXT NOT NULL,"
+                        + "	actionAmnt TEXT);";
                 connection.createStatement().execute(command);
 
                 command = "CREATE TABLE IF NOT EXISTS Users ("

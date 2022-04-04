@@ -62,11 +62,11 @@ public class TradeView extends JFrame implements Observer {
 		return dtm;
 	}
 
-	protected void emptyRowError(int row) {
-		JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (row + 1));
+	protected void emptyRowError(int row, String msg) {
+		JOptionPane.showMessageDialog(this, "please fill in the " + msg + " on line " + (row + 1));
 	}
 
-	protected TradeView(DefaultTableModel dtm, TradeModel model, GraphCreator vc) {
+	protected TradeView(TradeModel model, GraphCreator vc) {
 		// Set window title
 		super("Crypto Trading Tool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +74,7 @@ public class TradeView extends JFrame implements Observer {
 		this.vc = vc;
 		model.attach(this);
 		vc.attach(this);
-		this.dtm = dtm;
+		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
 		trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 
@@ -90,7 +90,6 @@ public class TradeView extends JFrame implements Observer {
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Broker Table",
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
-		strategyNames.add("None");
 		strategyNames.add("buy ADA");
 		strategyNames.add("buy BTC");
 		strategyNames.add("sell LUNA");
