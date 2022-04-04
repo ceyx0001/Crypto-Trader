@@ -10,14 +10,31 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * This class contains implements the mapping of a coin symbol to its name
+ * which are retrieved from CoinGecko's API
+ * 
+ * @author Ernest Li, Simone Sequeira
+ * @date 2022-03-30
+ */
 public class CrytpoDictionary {
 	private HashMap<String, String> cryptoDictionary;
 
+	/**
+	 * Constructor for CryptoDictionary object
+	 * @param Nothing
+	 * @return CryptoDictionary the CryptoDictionary object
+	 */
 	protected CrytpoDictionary() {
 		cryptoDictionary = new HashMap<String, String>();
 		findAvailableCryptos();
 	}
 	
+	/**
+	 * Maps the symbol of coins to its name
+	 * @param Nothing
+	 * @return void
+	 */
 	private void findAvailableCryptos() {
 		String urlString = 
 				"https://api.coingecko.com/api/v3/coins/markets" + 
@@ -51,6 +68,11 @@ public class CrytpoDictionary {
 		}
 	}
 	
+	/**
+	 * Gets the HashMap mapping the symbol of a coin to its name
+	 * @param Nothing
+	 * @return HashMap<String, String> the mapping of a coin symbol to its name
+	 */
 	protected HashMap<String, String> getCryptoDictionary() {
 		return cryptoDictionary;
 	}

@@ -11,8 +11,19 @@ import java.util.Scanner;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * This class implements the fetching of a coin's data and price
+ * from CoinGecko's API
+ * 
+ * @author Ernest Li, Simone Sequeira
+ * @date 2022-03-30
+ */
 public class DataFetcher {
-
+	/**
+	 *  Gets the data of a cryptocoin by querying CoinGecko API
+	 * @param id the coin's name
+	 * @return JsonObject the coin's data
+	 */
 	protected JsonObject getDataForCrypto(String id) {
 
 		String urlString = String.format(
@@ -42,6 +53,12 @@ public class DataFetcher {
 		return null;
 	}
 
+	/**
+	 * Gets the price of a coin by parsing the JsonObject from
+	 * CoinGecko's api
+	 * @param id the coin's name
+	 * @return double the coin's price
+	 */
 	protected double getPriceForCoin(String id) {
 		double price = 0.0;
 
@@ -58,6 +75,10 @@ public class DataFetcher {
 		return price;
 	}
 
+	/**
+	 * Gets today's calendar day
+	 * @return String today's date
+	 */
 	private String getDate() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date dateVar = new Date();
