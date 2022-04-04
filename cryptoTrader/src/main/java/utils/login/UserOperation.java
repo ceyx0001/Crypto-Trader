@@ -34,8 +34,7 @@ public class UserOperation {
 
     /**
      * Saves the user information to the embedded database
-     * 
-     * @param Nothing
+     *
      * @return boolean Determines if the info was saved successfully
      */
     protected boolean saveUser() {
@@ -58,8 +57,7 @@ public class UserOperation {
 
     /**
      * Determines if the name and password of the user are valid
-     * 
-     * @param Nothing
+     *
      * @return boolean Determines if the authentication process was successful
      */
     protected boolean authenticate() {

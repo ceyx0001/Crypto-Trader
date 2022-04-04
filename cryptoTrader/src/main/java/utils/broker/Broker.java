@@ -8,7 +8,7 @@ import utils.broker.factoryObjects.Strategy;
 /**
  * The class implementing the object associated with a broker
  * 
- * @author Anthony Tam
+ * @author Jun Shao, Anthony Tam
  * @date 2022-03-30
  */
 public class Broker {

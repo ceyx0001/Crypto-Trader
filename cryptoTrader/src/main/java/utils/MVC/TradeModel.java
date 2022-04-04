@@ -21,6 +21,7 @@ import utils.tradingProcess.TradeManager;
  * observer design pattern.
  *
  * @author Jun Shao
+ * @since 2022-03-30
  */
 public class TradeModel extends Subject {
     private Connection connection;
@@ -31,6 +32,9 @@ public class TradeModel extends Subject {
     private String[][] dataTable;
     private boolean missingInfo;
 
+    /**
+     * Constructor method for TradeModel
+     */
     public TradeModel() {
         Database proxy = new DatabaseProxy();
         factory = new BrokerFactory();
@@ -42,10 +46,17 @@ public class TradeModel extends Subject {
         missingInfo = false;
     }
 
+    /**
+     * Getter method that returns brokers
+     * @return hashmap of brokers
+     */
     public HashMap<String, Broker> getBrokers() {
         return brokers;
     }
 
+    /**
+     * Method which logs trade results to database
+     */
     public void logTrade() {
         try {
             String insert = "INSERT OR REPLACE INTO Brokers(name, strat, target, action, amnt, price, date, actionAmnt) VALUES(?,?,?,?,?,?,?,?)";
@@ -86,14 +97,32 @@ public class TradeModel extends Subject {
         return formatter.format(dateVar);
     }
 
+    /**
+     * Method which removes a broker from the database
+     * @param name is a String with a broker's name
+     */
     public void removeBroker(String name) {
         brokers.remove(name);
     }
 
+    /**
+     * Method which creates a new broker with given parameters and the BrokerFactory,
+     * which is used to implement a factory design pattern
+     *
+     * @param name is the name of the broker
+     * @param coins is a String containing the coins a broker is interested in
+     * @param strat is the broker's trading strategy
+     * @return the new broker that has been created
+     */
     protected Broker newBroker(String name, String coins, String strat) {
         return factory.getBroker(name, coins, strat);
     }
 
+    /**
+     * Method which tallies the number of times a trading broker has made a transaction
+     * @param broker is a broker
+     * @param strat is the strategy used by the broker
+     */
     private void tally(String broker, String strat) {
         HashMap<String, Integer> brokerStrats;
         if (data.get(broker) == null) {
@@ -107,6 +136,9 @@ public class TradeModel extends Subject {
         }
     }
 
+    /**
+     * Method which sets data table and whether or not there is missing info
+     */
     protected void setDataMap() {
         missingInfo = false;
         for (int row = 0; row < dataTable.length; row++) {

@@ -21,7 +21,8 @@ public abstract class Transaction {
      *
      * @param interest is a list of coins a broker is interested in
      * @param target is a coin that the broker's trade strategy uses to evaluate the condition
-     * @return
+     *
+     * @return a boolean representing whether the trade failed or not
      */
     public boolean fail(List<String> interest, String target) {
         for (String coin : interest) {
@@ -38,7 +39,8 @@ public abstract class Transaction {
      * @param interest is a list of coins a broker is interested in
      * @param target is a coin that the broker's trade strategy uses to evaluate the condition
      * @param target2 is a second coin that the broker's trade strategy uses to evaluate the condition
-     * @return
+     *
+     * @return a boolean representing whether the transaction failed or not
      */
     public boolean fail(List<String> interest, String target, String target2) {
         boolean noHas1 = true;

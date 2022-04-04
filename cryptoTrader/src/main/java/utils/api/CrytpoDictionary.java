@@ -22,7 +22,7 @@ public class CrytpoDictionary {
 
 	/**
 	 * Constructor for CryptoDictionary object
-	 * @param Nothing
+	 *
 	 * @return CryptoDictionary the CryptoDictionary object
 	 */
 	protected CrytpoDictionary() {
@@ -32,7 +32,7 @@ public class CrytpoDictionary {
 	
 	/**
 	 * Maps the symbol of coins to its name
-	 * @param Nothing
+	 *
 	 * @return void
 	 */
 	private void findAvailableCryptos() {
@@ -70,7 +70,7 @@ public class CrytpoDictionary {
 	
 	/**
 	 * Gets the HashMap mapping the symbol of a coin to its name
-	 * @param Nothing
+	 *
 	 * @return HashMap<String, String> the mapping of a coin symbol to its name
 	 */
 	protected HashMap<String, String> getCryptoDictionary() {

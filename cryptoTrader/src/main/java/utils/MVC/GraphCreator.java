@@ -18,7 +18,14 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+/**
+ * Class which creates and manages graphs used to visualize trades
+ *
+ * @author Jun Shao
+ * @since 2022-04-02
+ */
 public class GraphCreator extends Subject {
+	//initializing variables
 	private JScrollPane scrollPane;
 	private JTable table;
 	private DefaultTableModel dtm;
@@ -27,6 +34,9 @@ public class GraphCreator extends Subject {
 	private final int stratCol = 1;
 	private final int nameCol = 0;
 
+	/**
+	 * Constructor method
+	 */
 	public GraphCreator() {
 		scrollPane = new JScrollPane();
 		Object[] headers = { "Broker", "Strategy", "Coin List Needed", "CryptoCoin", "Action", "Quantity",
@@ -37,12 +47,22 @@ public class GraphCreator extends Subject {
 		bar = new ChartPanel(null);
 	}
 
+	/**
+	 * Main graph method which is used to call other methods that create charts and graphics on the user interface
+	 * @param map is a hashmap of trade and broker data
+	 * @param data is a table of data in form String[][]
+	 * @param missingInfo is a boolean representing whether or not there is missing info in the broker table
+	 */
 	public void createCharts(HashMap<String, HashMap<String, Integer>> map, String[][] data, boolean missingInfo) {
 		createTableOutput(data);
 		createBar(map, data, missingInfo);
 		notifyObservers();
 	}
 
+	/**
+	 * Method which creates table that outputs data from trade results
+	 * @param data is a table of type String[][] that represents trade data
+	 */
 	private void createTableOutput(String[][] data) {
 		for (int row = 0; row < data.length; row++) {
 			dtm.addRow(data[row]);
@@ -58,16 +78,21 @@ public class GraphCreator extends Subject {
 		table.setFillsViewportHeight(true);
 	}
 
-
+	/**
+	 * Method which creates a bar chart and shows it on the user interface
+	 * @param map is a hashmap of trade and broker data
+	 * @param data is a table of data in form String[][]
+	 * @param missingInfo is a boolean representing whether or not information is missing
+	 */
 	private void createBar(HashMap<String, HashMap<String, Integer>> map, String[][] data, boolean missingInfo) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
+		//check if brokers are missing information
 		if (missingInfo) {
 			JOptionPane.showConfirmDialog(null,
 					"Brokers are missing the required coins for the strategies. Refer to the Trader Actions table for more information.",
 					"Error While Performing Trade", JOptionPane.DEFAULT_OPTION);
 		}
-		
 
 		for (int r = 0; r < data.length; r++) {
 			HashMap<String, Integer> brokerStrats = map.get(data[r][nameCol]);
@@ -93,10 +118,18 @@ public class GraphCreator extends Subject {
 		bar.setBackground(Color.white);
 	}
 
+	/**
+	 * Getter method which returns the bar chart panel
+	 * @return ChartPanel for bar
+	 */
 	public ChartPanel getBar() {
 		return bar;
 	}
 
+	/**
+	 * Getter method which returns the scroll pane
+	 * @return JScrollPane
+	 */
 	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}

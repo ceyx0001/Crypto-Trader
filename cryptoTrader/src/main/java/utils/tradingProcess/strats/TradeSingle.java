@@ -23,6 +23,7 @@ public class TradeSingle extends Transaction {
      */
     @Override
     public void trade(Context c) {
+        //initializing variables
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date dateVar = new Date();
         String date = formatter.format(dateVar);
@@ -39,9 +40,11 @@ public class TradeSingle extends Transaction {
         String[] data = conditions[0].split(" ");
         String required = data[0];
 
+        //check if transaction fails due to missing intereset coins
         if (fail(interest, required)) {
             tr.addRow(name, strat, target, required, "Buy", "Null", "Null", date);
         } else {
+            //if not failed, compare conditions and add results
             String op = data[1];
             double stratPrice = Double.valueOf(data[2]);
             double realPrice = prices.get(required);

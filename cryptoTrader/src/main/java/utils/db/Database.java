@@ -4,6 +4,9 @@ import java.sql.Connection;
 
 /**
  * Abstract class which represents a database, used to implement the proxy design pattern
+ *
+ * @author Jun Shao
+ * @since 2022-04-02
  */
 public abstract class Database {
     /**
