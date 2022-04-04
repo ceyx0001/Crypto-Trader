@@ -84,14 +84,10 @@ public class DataVisualizationCreator extends Subject {
 	}
 
 	/**
-	 * ADD INFORMATION IDK!!!!!!!!!!!
-	 * ADD INFORMATION IDK!!!!!!!!!!!
-	 * ADD INFORMATION IDK!!!!!!!!!!!
-	 * ADD INFORMATION IDK!!!!!!!!!!!
-	 *
-	 * @param name
-	 * @param strat
-	 * @param map
+	 * Class which assigns additional strategies to existing brokers and adds brokers if required
+	 * @param name is the name of the broker
+	 * @param strat is the strategy employed by the broker
+	 * @param map is the HashMap containing all broker trading strategies
 	 */
 	private void tally(String name, String strat, HashMap<String, HashMap<String, Integer>> map) {
 		HashMap<String, Integer> brokerStrats;
