@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -16,10 +18,12 @@ import utils.tradingProcess.TradeProcess;
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
+    private List<String> neededCoins;
 
     public TradeModel() {
         connection = new DatabaseProxy().getConnection();
         brokers = new HashMap<String, Broker>();
+        neededCoins = new ArrayList<String>();
     }
 
     public DefaultTableModel getBrokersTable() {
@@ -59,6 +63,10 @@ public class TradeModel extends Subject {
         return brokers;
     }
 
+    public List<String> getNeededCoins() {
+        return neededCoins;
+    }
+
     public void saveBrokers() {
         try {
             String insert = "INSERT OR REPLACE INTO Brokers(id, coins, strat) VALUES(?,?,?)";
@@ -93,6 +101,6 @@ public class TradeModel extends Subject {
     }
 
     public String[][] getResults() {
-        return new TradeProcess().trade(brokers).getTable();
+        return new TradeProcess().trade(brokers, neededCoins).getTable();
     }
 }

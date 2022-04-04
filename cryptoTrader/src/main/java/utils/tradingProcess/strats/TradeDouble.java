@@ -27,22 +27,22 @@ public class TradeDouble extends Transaction {
         
         if (fail(interest, target)) {
             tr.addRow(name, strat, target, "Buy", "Null", "Null", date);
-        }
-
-        String[] data1 = conditions[0].split(" ");
-        String[] data2 = conditions[1].split(" ");
-        String name1 = data1[0];
-        String name2 = data2[0];
-        String op1 = data1[1];
-        String op2 = data2[1];
-        double rp1 = Double.valueOf(data1[2]);
-        double rp2 = Double.valueOf(data2[2]);
-        double ap1 = c.getPrices().get(name1);
-        double ap2 = prices.get(name2);
-        double targetPrice = prices.get(target);
-
-        if (new Compare().compare(ap1, rp1, ap2, rp2, op1, op2)) {
-            tr.addRow(name, strat, target, "Buy", "" + amnt, "" + targetPrice, date);
+        } else {
+            String[] data1 = conditions[0].split(" ");
+            String[] data2 = conditions[1].split(" ");
+            String name1 = data1[0];
+            String name2 = data2[0];
+            String op1 = data1[1];
+            String op2 = data2[1];
+            double stratPrice1 = Double.valueOf(data1[2]);
+            double stratPrice2 = Double.valueOf(data2[2]);
+            double realPrice1 = prices.get(name1);
+            double realPrice2 = prices.get(name2);
+            double targetPrice = prices.get(target);
+            
+            if (new Compare().compare(realPrice1, stratPrice1, realPrice2, stratPrice2, op1, op2)) {
+                tr.addRow(name, strat, target, "Buy", "" + amnt, "" + targetPrice, date);
+            }
         }
     }
 }

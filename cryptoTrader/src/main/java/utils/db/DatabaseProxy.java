@@ -1,9 +1,16 @@
 package utils.db;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
-public class DatabaseProxy implements DatabaseInterface {
-    private static Database db;
+public class DatabaseProxy extends Database {
+    private RealDatabase db;
+
+    @Override
+    public void init() {
+        db = RealDatabase.getdb();
+        db.init();
+    }
 
     @Override
     public Connection getConnection() {
@@ -14,8 +21,11 @@ public class DatabaseProxy implements DatabaseInterface {
     }
 
     @Override
-    public void init() {
-        db = Database.getdb();
-        db.init();
+    public void disconnect() {
+        try {
+            db.getConnection().close();
+        } catch (SQLException e) {
+            System.out.println("Disconnect failed: " + e.getMessage());
+        }
     }
 }

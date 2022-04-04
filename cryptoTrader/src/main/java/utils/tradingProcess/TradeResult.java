@@ -11,11 +11,8 @@ public class TradeResult {
     }
 
     public void addRow(String name, String strat, String coin, String action, String amnt, String price, String date) {
-        int columns = 7;
-        for (int i = 0; i < columns; i++) {
             String[] row = {name, strat, coin, action, amnt, price, date};
             table.add(row);
-        }
     }
 
     public String[][] getTable() {

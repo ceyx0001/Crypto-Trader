@@ -32,11 +32,11 @@ public class TradeSingle extends Transaction {
         String[] data = conditions[0].split(" ");
         String coinName = data[0];
         String op = data[1];
-        double reqPrice = Double.valueOf(data[2]);
-        double actualPrice = prices.get(coinName);
+        double stratPrice = Double.valueOf(data[2]);
+        double realPrice = prices.get(coinName);
         double targetPrice = prices.get(target);
 
-        if (new Compare().compare(actualPrice, reqPrice, op)) {
+        if (new Compare().compare(realPrice, stratPrice, op)) {
             tr.addRow(name, strat, target, "Buy", "" + amnt, "" + targetPrice, date);
         }
     }

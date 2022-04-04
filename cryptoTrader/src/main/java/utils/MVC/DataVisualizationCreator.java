@@ -3,6 +3,7 @@ package utils.MVC;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -10,12 +11,14 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -36,16 +39,19 @@ public class DataVisualizationCreator extends Subject {
 	public DataVisualizationCreator() {
 		scrollPane = new JScrollPane();
 		time = new ChartPanel(null);
-		scatter = new ChartPanel(null);;
-		bar = new ChartPanel(null);;
+		scatter = new ChartPanel(null);
+		;
+		bar = new ChartPanel(null);
+		;
 	}
 
-	public void createCharts(Object[][] data) {
+	public void createCharts(String[][] data) {
 		// createTextualOutput();
 		createTableOutput(data);
 		// createTimeSeries();
 		// createScatter();
-		// createBar();
+		createBar(data);
+		notifyObservers();
 	}
 
 	private void createTextualOutput() {
@@ -63,14 +69,14 @@ public class DataVisualizationCreator extends Subject {
 		table.setFillsViewportHeight(true);
 	}
 
-	private void createTableOutput(Object[][] data) {
+	private void createTableOutput(String[][] data) {
 		// Dummy dates for demo purposes. These should come from selection menu
-		Object[] columnNames = { "Trader", "Strategy", "CryptoCoin", "Action", "Quantity", "Price", "Date" };
-
+		Object[] columnNames = { "Trader", "Strategy", "CryptoCoin", "Action", "Quantity", "Price (CAD)",
+				"Date (dd-MM-YY)" };
 		JTable table = new JTable(data, columnNames);
 		// table.setPreferredSize(new Dimension(600, 300));
 
-		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
 				"Trader Actions",
 				TitledBorder.CENTER,
@@ -78,8 +84,6 @@ public class DataVisualizationCreator extends Subject {
 
 		scrollPane.setPreferredSize(new Dimension(800, 300));
 		table.setFillsViewportHeight(true);
-
-		notifyObservers();
 	}
 
 	private void createTimeSeries() {
@@ -179,35 +183,42 @@ public class DataVisualizationCreator extends Subject {
 		scatter.setBackground(Color.white);
 	}
 
-	private void createBar() {
+	private void tally(String name, String strat, HashMap<String, HashMap<String, Integer>> map) {
+		HashMap<String, Integer> brokerStrats;
+		if (map.get(name) == null) {
+			brokerStrats = new HashMap<String, Integer>();
+			brokerStrats.put(strat, 1);
+			map.put(name, brokerStrats);
+		} else {
+			brokerStrats = map.get(name);
+			brokerStrats.put(strat, brokerStrats.get(strat) + 1);
+			map.put(name, brokerStrats);
+		}
+	}
 
+	private void createBar(String[][] data) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		// Those are hard-coded values!!!!
-		// You will have to come up with a proper datastructure to populate the BarChart
-		// with live data!
-		dataset.setValue(6, "Trader-1", "Strategy-A");
-		dataset.setValue(5, "Trader-2", "Strategy-B");
-		dataset.setValue(0, "Trader-3", "Strategy-E");
-		dataset.setValue(1, "Trader-4", "Strategy-C");
-		dataset.setValue(10, "Trader-5", "Strategy-D");
+		HashMap<String, HashMap<String, Integer>> map = new HashMap<String, HashMap<String, Integer>>();
+		for (int row = 0; row < data.length; row++) {
+			tally(data[row][0], data[row][1], map);
+		}
 
-		CategoryPlot plot = new CategoryPlot();
-		BarRenderer barrenderer1 = new BarRenderer();
+		for (String name : map.keySet()) {
+			HashMap<String, Integer> brokerStrats = map.get(name);
+			for (String strat : brokerStrats.keySet()) {
+				int count = brokerStrats.get(strat);
+				System.out.println(count);
+				dataset.setValue(count, name, strat);
+			}
+		}
 
-		plot.setDataset(0, dataset);
-		plot.setRenderer(0, barrenderer1);
-		CategoryAxis domainAxis = new CategoryAxis("Strategy");
-		plot.setDomainAxis(domainAxis);
-		LogAxis rangeAxis = new LogAxis("Actions(Buys or Sells)");
-		rangeAxis.setRange(new Range(1.0, 20.0));
-		plot.setRangeAxis(rangeAxis);
-
-		// plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-		// plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-
-		JFreeChart barChart = new JFreeChart("Actions Performed By Traders So Far",
-				new Font("Serif", java.awt.Font.BOLD, 18), plot,
-				true);
+		JFreeChart barChart = ChartFactory.createBarChart(
+				"Actions Performed By Traders So Far",
+				"Strategy",
+				"Actions (Buys and Sales)",
+				dataset,
+				PlotOrientation.VERTICAL,
+				true, false, false);
 
 		bar = new ChartPanel(barChart);
 		bar.setPreferredSize(new Dimension(600, 300));
@@ -219,15 +230,7 @@ public class DataVisualizationCreator extends Subject {
 		return bar;
 	}
 
-	public ChartPanel getScatter() {
-		return scatter;
-	}
-
 	public JScrollPane getScrollPane() {
 		return scrollPane;
-	}
-
-	public ChartPanel getTime() {
-		return time;
 	}
 }

@@ -2,6 +2,8 @@ package utils.MVC;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -29,7 +31,6 @@ public class TradeController implements ActionListener, TableModelListener {
 
         if ("refresh".equals(command)) {
             saveTable(dtm);
-            model.notifyObservers();
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
         } else if ("remTableRow".equals(command)) {
@@ -82,10 +83,12 @@ public class TradeController implements ActionListener, TableModelListener {
             }
             String strat = strategyObject.toString();
             model.getBrokers().put(name, model.newBroker(name, coins, strat));
+            model.getNeededCoins().addAll(Arrays.asList(coins.split(",")));
             //System.out.println(model.getBrokers().get(name).getStrat().printStrat());
         }
 
         view.getStats().removeAll();
+        model.notifyObservers();
         vc.createCharts(model.getResults());
         model.saveBrokers();
     }

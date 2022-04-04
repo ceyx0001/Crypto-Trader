@@ -65,9 +65,6 @@ public class TradeView extends JFrame implements Observer {
 	protected TradeView(DefaultTableModel dtm, TradeModel model, DataVisualizationCreator vc) {
 		// Set window title
 		super("Crypto Trading Tool");
-		setSize(900, 600);
-		pack();
-		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.model = model;
 		this.vc = vc;
@@ -140,7 +137,7 @@ public class TradeView extends JFrame implements Observer {
 		addRow.setActionCommand("addTableRow");
 		remRow.setActionCommand("remTableRow");
 
-		scrollPane.setPreferredSize(new Dimension(800, 300));
+		scrollPane.setPreferredSize(new Dimension(600, 300));
 		table.setFillsViewportHeight(true);
 		
 
@@ -159,22 +156,24 @@ public class TradeView extends JFrame implements Observer {
 
 		// Set charts region
 		JPanel west = new JPanel();
-		west.setPreferredSize(new Dimension(1000, 650));
+		west.setPreferredSize(new Dimension(850, 650));
 		stats = new JPanel();
 		stats.setLayout(new GridLayout(2, 2));
 
 		west.add(stats);
 
-		getContentPane().add(north, BorderLayout.NORTH);
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(west, BorderLayout.CENTER);
 		getContentPane().add(south, BorderLayout.SOUTH);
 //		getContentPane().add(west, BorderLayout.WEST);
+		pack();
+		setVisible(true);
 	}
 
 	public void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
+		super.revalidate();
 	}
 
 	@Override
@@ -183,10 +182,9 @@ public class TradeView extends JFrame implements Observer {
 			JOptionPane.showConfirmDialog(null, "Trading process starting",
 					"Perform Trade", JOptionPane.DEFAULT_OPTION);
 		} else if (changed.equals(vc)) {
-			updateStats(vc.getBar());
-			updateStats(vc.getScatter());
-			updateStats(vc.getScatter());
+			System.out.println("paint graphs");
 			updateStats(vc.getScrollPane());
+			updateStats(vc.getBar());
 		}
 	}
 }

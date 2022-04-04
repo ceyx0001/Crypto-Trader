@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import utils.db.DatabaseInterface;
+import utils.db.Database;
 import utils.db.DatabaseProxy;
 
 /**
@@ -27,7 +27,7 @@ public class UserOperation {
     public UserOperation(String name, String pass) {
         this.name = name;
         this.pass = pass;
-        DatabaseInterface db = new DatabaseProxy();
+        Database db = new DatabaseProxy();
         db.init();
         connection = db.getConnection();
     }

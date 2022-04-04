@@ -17,7 +17,7 @@ public class BuyADA implements Strategy {
 
     private String[] populate() {
         String[] temp = {
-                "BTC < 50000",
+                "BTC < 60000",
                 "ADA > 1",
         };
         return temp;
