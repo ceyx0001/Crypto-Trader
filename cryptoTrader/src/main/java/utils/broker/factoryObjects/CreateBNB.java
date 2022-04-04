@@ -11,12 +11,11 @@ public class CreateBNB implements Creator {
     /**
      * Creates the strategyt associated with selling BNB coins
      * 
-     * @param Nothing
      * @return Strategy the strategy for selling BNB coins
      */
     @Override
     public Strategy createStrategy() {
         return new SellBNB();
     }
-    
+
 }

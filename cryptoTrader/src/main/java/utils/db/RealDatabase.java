@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * proxy design pattern as the actual database
  *
  * @author Jun Shao
- * @since 2022-04-04
+ * @date 2022-04-04
  */
 public class RealDatabase extends Database {
     private static RealDatabase dbinstance;
@@ -29,8 +29,6 @@ public class RealDatabase extends Database {
 
     /**
      * Constructor for the Security object
-     *
-     * @return Nothing
      */
     private RealDatabase() {
         connection = connect();
@@ -48,8 +46,6 @@ public class RealDatabase extends Database {
 
     /**
      * Creates the database for storing broker and user information
-     *
-     * @return void
      */
     @Override
     public void init() {

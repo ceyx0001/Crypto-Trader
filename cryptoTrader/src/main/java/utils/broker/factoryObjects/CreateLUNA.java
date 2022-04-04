@@ -11,7 +11,6 @@ public class CreateLUNA implements Creator {
     /**
      * Creates the strategyt associated with selling LUNA coins
      * 
-     * @param Nothing
      * @return Strategy the strategy for selling LUNA coins
      */
     @Override

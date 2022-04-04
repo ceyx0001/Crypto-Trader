@@ -11,13 +11,14 @@ import java.util.List;
  */
 public class TradeResult {
     private List<String[]> table;
+    private final int headerAmnt = 8;
 
     protected TradeResult() {
         table = new ArrayList<String[]>();
     }
 
     /**
-     * Method which adds a new row to trade results using provided parameters.
+     * Method which adds a new row to trade results using provided parameters
      * 
      * @param name   is the name of the broker
      * @param strat  is the name of the strat
@@ -34,12 +35,13 @@ public class TradeResult {
     }
 
     /**
-     * Accessor method which returns table as a 2D string array.
+     * Accessor method which returns table as a 2D string array
+     * 
      * @return String[][] the table representing the TradeResult
      */
     public String[][] getTable() {
         int rows = table.size();
-        String[][] result = new String[rows][8];
+        String[][] result = new String[rows][headerAmnt];
         for (int i = 0; i < rows; i++) {
             result[i] = table.get(i);
         }

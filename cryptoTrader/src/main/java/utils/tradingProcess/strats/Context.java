@@ -11,7 +11,7 @@ import utils.tradingProcess.TradeResult;
  * run-time
  *
  * @author Jun Shao
- * @since 2022-04-03
+ * @date 2022-04-03
  */
 public class Context {
     private Transaction transaction;
@@ -21,14 +21,16 @@ public class Context {
     private ArrayList<String> availableCoins;
 
     /**
-     * Constructor method for the Context class which assigns variables values given by parameters.
+     * Constructor method for the Context class which assigns variables values given
+     * by parameters.
      *
      * @param transaction is a transaction object
-     * @param b is a broker object which represents a trading broker
-     * @param prices is a hashmap which stores prices for coins
-     * @param tr is an object which represents the results of a trade
+     * @param b           is a broker object which represents a trading broker
+     * @param prices      is a hashmap which stores prices for coins
+     * @param tr          is an object which represents the results of a trade
      */
-    public Context(Transaction transaction, Broker b, HashMap<String, Double> prices, TradeResult tr, ArrayList<String> availableCoins) {
+    public Context(Transaction transaction, Broker b, HashMap<String, Double> prices, TradeResult tr,
+            ArrayList<String> availableCoins) {
         this.transaction = transaction;
         this.b = b;
         this.prices = prices;

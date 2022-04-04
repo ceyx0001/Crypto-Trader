@@ -1,4 +1,5 @@
 package utils.login;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,7 +21,7 @@ import utils.MVC.TradeController;
  * use case.
  * 
  * @author Jun Shao
- * @since 2022-03-30
+ * @date 2022-03-30
  */
 public class LoginUI extends JFrame implements ActionListener, DocumentListener {
     private JTextField nameIn;
@@ -31,7 +32,6 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
     /**
      * Constructor method for the GUI
-     * @return Nothing.
      */
     public LoginUI() {
         super("Authentication");
@@ -44,6 +44,7 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
         panel.setLayout(null);
 
+        // creating and adding components
         JLabel label = new JLabel("Username");
         label.setBounds(20, 20, 80, 25);
         panel.add(label);
@@ -79,15 +80,15 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         register.addActionListener(this);
         register.setEnabled(false);
         panel.add(register);
-        
+
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     /**
      * actionPerformed handles the logic for action events
+     * 
      * @param e the action event
-     * @return void
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -97,7 +98,7 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
         int input;
         UserOperation action = new UserOperation(name, pass);
 
-        if (e.getActionCommand().equals("Register")) {
+        if (e.getActionCommand().equals("Register")) { // register a new user
             result = action.saveUser();
             if (result) {
                 input = JOptionPane.showConfirmDialog(null,
@@ -106,7 +107,7 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
                 input = JOptionPane.showConfirmDialog(null,
                         name + " already exists.", "Error", JOptionPane.DEFAULT_OPTION);
             }
-        } else if (e.getActionCommand().equals("Login")) {
+        } else if (e.getActionCommand().equals("Login")) { // start auth process
             result = action.authenticate();
             if (result) {
                 new TradeController();
@@ -114,12 +115,11 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
             } else {
                 input = JOptionPane.showConfirmDialog(null,
                         "Incorrect credentials. The app will now terminate.", "Error", JOptionPane.DEFAULT_OPTION);
-
                 if (input == 0 || input == -1) {
                     dispose();
                 }
             }
-        } else if (e.getActionCommand().equals("Show")) {
+        } else if (e.getActionCommand().equals("Show")) { // show password field
             passIn.setEchoChar((char) 0);
             mask.setText("Hide");
         } else {
@@ -130,8 +130,8 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
     /**
      * Gives notification that there was an insert into the document
+     * 
      * @param e the document event
-     * @return void
      */
     @Override
     public void insertUpdate(DocumentEvent e) {
@@ -143,7 +143,6 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
      * Gives notification that a portion of the document has been removed
      * 
      * @param e the document event
-     * @return void
      */
     @Override
     public void removeUpdate(DocumentEvent e) {
@@ -154,7 +153,6 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
      * Gives notification that an attribute or set of attributes changed
      * 
      * @param e the document event
-     * @return void
      */
     @Override
     public void changedUpdate(DocumentEvent e) {
@@ -163,8 +161,6 @@ public class LoginUI extends JFrame implements ActionListener, DocumentListener 
 
     /**
      * Handles the greying out the GUI buttons
-     *
-     * @return void
      */
     private void update() {
         if (passIn.getPassword().length == 0 || nameIn.getText().equals("")) {

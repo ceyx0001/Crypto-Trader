@@ -20,11 +20,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-/** 
+/**
  * This class is the view component of the trading system
  * 
- * @author Jun Shao
- * @since 2022-03-30
+ * @author Ernest Li, Simone Sequeira
+ * @date 2022-03-30
  */
 public class TradeView extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
@@ -39,6 +39,7 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns trade button
+	 * 
 	 * @return trade the button thats starts the trading process
 	 */
 	protected JButton getTradeButton() {
@@ -47,6 +48,7 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns add button
+	 * 
 	 * @return add the button that adds rows
 	 */
 	protected JButton getAddButton() {
@@ -55,6 +57,7 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns remove row button
+	 * 
 	 * @return remove the button that removes rows
 	 */
 	protected JButton getRemButton() {
@@ -63,6 +66,7 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns JTable object table
+	 * 
 	 * @return table the table for user input
 	 */
 	protected JTable getTable() {
@@ -71,6 +75,7 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns JPanel object
+	 * 
 	 * @return stats the stats panel of the view
 	 */
 	protected JPanel getStats() {
@@ -79,7 +84,8 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns DefaulTableModel object
-	 * @return default table model
+	 * 
+	 * @return DefaultTableModel the table model object
 	 */
 	protected DefaultTableModel getDTM() {
 		return dtm;
@@ -98,15 +104,15 @@ public class TradeView extends JFrame implements Observer {
 		vc.attach(this);
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
 
-		//add perform trade button
+		// add perform trade button
 		trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 
-		//add perform trade button panel
+		// add perform trade button panel
 		JPanel south = new JPanel();
 		south.add(trade);
 
-		//add trading broker table and its panel
+		// add trading broker table and its panel
 		table = new JTable(dtm);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table.setPreferredSize(new Dimension(600, 300));
@@ -130,7 +136,6 @@ public class TradeView extends JFrame implements Observer {
 
 		scrollPane.setPreferredSize(new Dimension(600, 300));
 		table.setFillsViewportHeight(true);
-		
 
 		JPanel east = new JPanel();
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
@@ -141,7 +146,7 @@ public class TradeView extends JFrame implements Observer {
 		buttons.add(remRow);
 		east.add(buttons);
 
-		//west JPanel for graphics and results
+		// west JPanel for graphics and results
 		JPanel west = new JPanel();
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(850, 650));
@@ -158,7 +163,8 @@ public class TradeView extends JFrame implements Observer {
 	}
 
 	/**
-	 * Method which updates adds component from parameter to current JPanel and refreshes the panel
+	 * Method which updates adds component from parameter to current JPanel and
+	 * refreshes the panel
 	 *
 	 * @param component is a JComponent object
 	 */

@@ -35,7 +35,6 @@ public class Broker {
 
     /**
      * Gets the name of the Broker object
-     * @param Nothing
      * @return String the name of the Broker object
      */
     public String getName() {
@@ -44,7 +43,6 @@ public class Broker {
 
     /**
      * Gets the coins of the Broker object
-     * @param Nothing
      * @return HashMap<String, Double> the coins of the Broker object
      */
     public HashMap<String, Double> getInterest() {
@@ -53,7 +51,6 @@ public class Broker {
 
     /**
      * Gets the strategy of the Broker object
-     * @param Nothing
      * @return Strategy the strategy of the Broker object
      */
     public Strategy getStrat() {
@@ -63,7 +60,6 @@ public class Broker {
     /**
      * Notifies the broker of the coin prices
      * @param coin the name of the coin
-     * @return void
      */
     public void setInterestPrice(String coin, double price) {
         interestPrices.put(coin, price);
@@ -73,7 +69,6 @@ public class Broker {
      * Notifies the broker of the CAD they used
      * 
      * @param coin the name of the coin
-     * @return void
      */
     public void setPrice(double price) {
         targetPrice = Double.toString(price);
@@ -83,7 +78,6 @@ public class Broker {
      * Gets the amount of CAD the broker used
      * 
      * @param coin the name of the coin
-     * @return void
      */
     public String getPrice() {
         return targetPrice;

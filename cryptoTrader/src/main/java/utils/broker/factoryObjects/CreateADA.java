@@ -10,12 +10,12 @@ package utils.broker.factoryObjects;
 public class CreateADA implements Creator {
     /**
      * Creates the strategyt associated with buying ADA coins
-     * @param Nothing
+     * 
      * @return Strategy the strategy for buying ADA coins
      */
     @Override
     public Strategy createStrategy() {
         return new BuyADA();
     }
-    
+
 }

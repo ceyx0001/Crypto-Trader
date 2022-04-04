@@ -11,7 +11,7 @@ import utils.db.DatabaseProxy;
  * This is the class that handles the user login of the system
  * 
  * @author Jun Shao
- * @since 2022-03-30
+ * @date 2022-03-30
  */
 public class UserOperation {
     private String name;
@@ -39,6 +39,7 @@ public class UserOperation {
      */
     protected boolean saveUser() {
         try {
+            // sqlite insert new data
             String command = "INSERT INTO Users(id, pass) VALUES(?,?)";
             PreparedStatement s = connection.prepareStatement(command);
             s.setString(1, name);
@@ -62,6 +63,7 @@ public class UserOperation {
      */
     protected boolean authenticate() {
         try {
+            // sqlite fetch data
             String command = "SELECT id, pass FROM Users WHERE id = ?";
             PreparedStatement s = connection.prepareStatement(command);
             s.setString(1, name);

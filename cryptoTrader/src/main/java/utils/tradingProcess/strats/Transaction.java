@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Abstrasct class which represents a transaction.
  *
- * @author Jun Shao
+ * @author Anthony Tam
  * @since 2022-04-03
  */
 public abstract class Transaction {
@@ -17,10 +17,12 @@ public abstract class Transaction {
     public abstract void trade(Context context);
 
     /**
-     * Class which evaluates whether or not necessary coin for trade strategy are in broker's interest list
+     * Class which evaluates whether or not necessary coin for trade strategy are in
+     * broker's interest list
      *
      * @param interest is a list of coins a broker is interested in
-     * @param target is a coin that the broker's trade strategy uses to evaluate the condition
+     * @param target   is a coin that the broker's trade strategy uses to evaluate
+     *                 the condition
      *
      * @return a boolean representing whether the trade failed or not
      */
@@ -34,11 +36,14 @@ public abstract class Transaction {
     }
 
     /**
-     * Class which evaluates whether or not necessary coins for trade strategy are in broker's interest list
+     * Class which evaluates whether or not necessary coins for trade strategy are
+     * in broker's interest list
      *
      * @param interest is a list of coins a broker is interested in
-     * @param target is a coin that the broker's trade strategy uses to evaluate the condition
-     * @param target2 is a second coin that the broker's trade strategy uses to evaluate the condition
+     * @param target   is a coin that the broker's trade strategy uses to evaluate
+     *                 the condition
+     * @param target2  is a second coin that the broker's trade strategy uses to
+     *                 evaluate the condition
      *
      * @return a boolean representing whether the transaction failed or not
      */

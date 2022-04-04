@@ -10,7 +10,6 @@ public interface Creator {
     /**
      * The abstract method for creating a trading strategy
      * 
-     * @param Nothing
      * @return Strategy the trading strategy
      */
     public abstract Strategy createStrategy();

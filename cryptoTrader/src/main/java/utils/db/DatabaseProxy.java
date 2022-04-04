@@ -3,11 +3,12 @@ package utils.db;
 import java.sql.Connection;
 
 /**
- * Class which is used to represent a database proxy, which is a placeholder for a database object in the
+ * Class which is used to represent a database proxy, which is a placeholder for
+ * a database object in the
  * proxy design pattern and serves as a substitute for the RealDatabase object
  *
  * @author Jun Shao
- * @since 2022-04-03
+ * @date 2022-04-03
  */
 public class DatabaseProxy extends Database {
     private RealDatabase db;
@@ -22,7 +23,9 @@ public class DatabaseProxy extends Database {
     }
 
     /**
-     * Getter method which returns a Connection object representing the connection to the database
+     * Getter method which returns a Connection object representing the connection
+     * to the database
+     * 
      * @return Connection object representing the connection to the database
      */
     @Override

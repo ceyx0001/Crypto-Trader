@@ -22,48 +22,52 @@ import com.google.gson.JsonParser;
  */
 public class DataFetcher {
 	/**
-	 *  Gets the data of a cryptocoin by querying CoinGecko API
+	 * Gets the data of a cryptocoin by querying CoinGecko API
+	 * 
 	 * @param id the coin's name
 	 * @return JsonObject the coin's data
 	 */
 	protected JsonObject getDataForCrypto(String id, HttpURLConnection conn, URL url) {
-
-			int responsecode = 0;
+		int responsecode = 0;
+		try {
+			responsecode = conn.getResponseCode();
+		} catch (IOException e) {
+			System.out.println("Error getting response code");
+		}
+		// valid response
+		if (responsecode == 200) {
+			String inline = "";
+			Scanner sc = null;
+			// append JSON objects as a string
 			try {
-				responsecode = conn.getResponseCode();
+				sc = new Scanner(url.openStream());
 			} catch (IOException e) {
-				System.out.println("Error getting response code");
+				System.out.println("Error opening stream: " + e.getMessage());
 			}
-			if (responsecode == 200) {
-				String inline = "";
-				Scanner sc = null;
-				try {
-					sc = new Scanner(url.openStream());
-				} catch (IOException e) {
-					System.out.println("Error opening stream: " + e.getMessage());
-				}
-				while (sc.hasNext()) {
-					inline += sc.nextLine();
-				}
-				sc.close();
-				JsonObject jsonObject = new JsonParser().parse(inline).getAsJsonObject();
-				return jsonObject;
-			} else if (responsecode == 404) {
-				System.out.println("could not find id for " + id);
+			while (sc.hasNext()) {
+				inline += sc.nextLine();
 			}
+			sc.close();
+			// parse for the coin
+			JsonObject jsonObject = new JsonParser().parse(inline).getAsJsonObject();
+			return jsonObject;
+		} else if (responsecode == 404) {
+			System.out.println("could not find id for " + id);
+		}
 
-		
 		return null;
 	}
 
 	/**
 	 * Gets the price of a coin by parsing the JsonObject from
 	 * CoinGecko's api
+	 * 
 	 * @param id the coin's name
 	 * @return double the coin's price
 	 */
 	protected double getPriceForCoin(String id) {
 		double price = 0.0;
+		// target url
 		String urlString = String.format(
 				"https://api.coingecko.com/api/v3/coins/%s/history?date=%s", id, getDate());
 		URL url = null;
@@ -84,6 +88,7 @@ public class DataFetcher {
 			System.out.println("Protocol exception while setting request method");
 		}
 
+		// getting the data values from the JSON fields
 		JsonObject jsonObject = getDataForCrypto(id, conn, url);
 		if (jsonObject != null) {
 			JsonObject marketData = jsonObject.get("market_data").getAsJsonObject();
@@ -99,6 +104,7 @@ public class DataFetcher {
 
 	/**
 	 * Gets today's calendar day
+	 * 
 	 * @return String today's date
 	 */
 	private String getDate() {

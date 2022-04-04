@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Main class which controls trades and implements action listeners for buttons
  *
- * @author Jun Shao
- * @since 2022-03-30
+ * @author Ernest Li, Simone Sequeira
+ * @date 2022-03-30
  */
 public class TradeController extends WindowAdapter implements ActionListener, TableModelListener {
     private TradeModel model;
@@ -24,9 +24,6 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
 
     /**
      * Constructor for TradeController class which initializes its fields
-     * 
-     * @param Nothing
-     * @return Nothing
      */
     public TradeController() {
         model = new TradeModel();
@@ -41,9 +38,8 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
 
     /**
      * Handles action events by invoking their associated methods
-     *
+     * 
      * @param e is an ActionEvent object
-     * @return void
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -52,10 +48,11 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
         int selectedRow = view.getTable().getSelectedRow();
         String name = null;
 
-        //action event parsing, determines what action was performed and executes its
-        if ("refresh".equals(command)) {
+        // action event parsing, determines what action was performed and executes
+        // the necessary methods of the model component
+        if ("refresh".equals(command)) { // perform trade
             saveTable(dtm);
-        } else if ("addTableRow".equals(command)) {
+        } else if ("addTableRow".equals(command)) { // add row
             dtm.addRow(new String[3]);
             if (selectedRow != -1) {
                 Object val = view.getTable().getValueAt(selectedRow, 0);
@@ -64,7 +61,7 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
                 }
                 model.addBrokerInTable(name);
             }
-        } else if ("remTableRow".equals(command)) {
+        } else if ("remTableRow".equals(command)) { // remove row
             if (selectedRow != -1) {
                 Object val = view.getTable().getValueAt(selectedRow, 0);
                 if (val != null) {
@@ -81,7 +78,6 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
      * Checks if a broker already exists after a table cell was edited
      * 
      * @param e the TableModelEvent
-     * @return void
      */
     @Override
     public void tableChanged(TableModelEvent e) {
@@ -102,7 +98,6 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
      * to the embedded database and start the trading process
      * 
      * @param dtm the current DefaultTableModel
-     * @return void
      */
     private void saveTable(DefaultTableModel dtm) {
         for (int count = 0; count < dtm.getRowCount(); count++) {
@@ -121,11 +116,15 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
                 view.emptyRowError(count, "strategy name");
                 return;
             }
+
+            // getting row information
             String coins = coinObject.toString().replaceAll("\\{|\\}|=|\\s", "");
             String name = traderObject.toString();
             String strat = strategyObject.toString();
             model.getBrokers().put(name, model.newBroker(name, coins, strat));
         }
+
+        // update data in model and view components
         model.notifyObservers();
         model.setDataTable();
         model.setDataMap();
@@ -138,7 +137,6 @@ public class TradeController extends WindowAdapter implements ActionListener, Ta
      * Disconnects from the database and closes the view component
      * 
      * @param e the WindowEvent
-     * @return void
      */
     @Override
     public void windowClosing(WindowEvent e) {

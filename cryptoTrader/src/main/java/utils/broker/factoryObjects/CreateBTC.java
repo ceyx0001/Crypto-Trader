@@ -11,12 +11,11 @@ public class CreateBTC implements Creator {
     /**
      * Creates the strategy associated with buying BTC coins
      * 
-     * @param Nothing
      * @return Strategy the strategy for buying BTC coins
      */
     @Override
     public Strategy createStrategy() {
         return new BuyBTC();
     }
-    
+
 }
