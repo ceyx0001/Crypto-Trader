@@ -6,7 +6,6 @@ import utils.tradingProcess.strats.TradeDouble;
 import utils.tradingProcess.strats.TradeSingle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
