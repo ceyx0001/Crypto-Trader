@@ -10,15 +10,15 @@ public class SellLUNA implements Strategy {
     public SellLUNA() {
         name = "sell LUNA";
         action = "sell double";
-        target = "LUNA";
+        target = "Terra";
         amnt = 60;
         conditions = populate();
     }
 
     private String[] populate() {
         String[] temp = {
-            "BTC > 52000",
-            "ETC < 50",
+            "BTC > 40000",
+            "ETH < 50",
         };
         return temp;
     }

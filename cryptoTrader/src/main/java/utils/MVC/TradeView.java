@@ -38,30 +38,61 @@ public class TradeView extends JFrame implements Observer {
 	private DefaultTableModel dtm;
 	private JTable table;
 
+	/**
+	 * Method which returns trade button
+	 * @return trade button
+	 */
 	public JButton getTradeButton() {
 		return trade;
 	}
 
+	/**
+	 * Method which returns add button
+	 * @return add button
+	 */
 	public JButton getAddButton() {
 		return addRow;
 	}
 
+	/**
+	 * Method which returns remove row button
+	 * @return remove row button
+	 */
 	public JButton getRemButton() {
 		return remRow;
 	}
 
+	/**
+	 * Method which returns JTable object table
+	 * @return table
+	 */
 	public JTable getTable() {
 		return table;
 	}
 
+	/**
+	 * Method which returns JPanel object
+	 * @return panel
+	 */
 	public JPanel getStats() {
 		return stats;
 	}
 
+	/**
+	 * Method which returns DefaulTableModel object
+	 * @return default table model
+	 */
 	public DefaultTableModel getDTM() {
 		return dtm;
 	}
 
+	/**
+	 * Constructor method for TradeView
+	 *
+	 * @param dtm is a DefaultTradeModel object
+	 * @param model is a TradeModel object
+	 * @param vc is a DataVisualizationCreator object
+	 */
 	protected TradeView(DefaultTableModel dtm, TradeModel model, DataVisualizationCreator vc) {
 		// Set window title
 		super("Crypto Trading Tool");
@@ -170,12 +201,22 @@ public class TradeView extends JFrame implements Observer {
 		setVisible(true);
 	}
 
+	/**
+	 * Method which updates adds component from parameter to current JPanel and refreshes the panel
+	 *
+	 * @param component is a JComponent object
+	 */
 	public void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
 		super.revalidate();
 	}
 
+	/**
+	 * Method which updates the observer depending on what the user has changed
+	 *
+	 * @param changed object represents what has caused the update
+	 */
 	@Override
 	public void updateObserver(Subject changed) {
 		if (changed.equals(model)) {

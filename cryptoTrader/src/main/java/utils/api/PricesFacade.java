@@ -12,17 +12,16 @@ import java.util.List;
  */
 public class PricesFacade {
     private DataFetcher df = new DataFetcher();
-    private CryptoList dict = new CryptoList();
+    private CrytpoDictionary dict = new CrytpoDictionary();
 
     /**
      * Gets the price of a coin by invoking the required methods in the package
      * @param neededCoins the list of coins required for a trading strategy
      * @return HashMap<String, Double> the map of a coin to its price
      */
-    public HashMap<String, Double> getPrices() {
+    public HashMap<String, Double> getPrices(List<String> neededCoins) {
         HashMap<String, Double> prices = new HashMap<String, Double>();
-        List<String> availableCryptos = dict.getCryptoList();
-        for (String id : availableCryptos) {
+        for (String id : neededCoins) {
             String fullName = dict.getCryptoDictionary().get(id);
             prices.put(id, df.getPriceForCoin(fullName));
         }

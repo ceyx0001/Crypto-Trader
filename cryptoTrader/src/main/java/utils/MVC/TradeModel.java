@@ -17,24 +17,16 @@ import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
 /**
- * The model component of the system that implements
- * the data operations required to save/retrieve brokers to/from the
- * embedded database and initiates the trading process
- * 
+ * Class which represents the trading model, extends the Subject class in order to make use of the
+ * observer design pattern.
+ *
  * @author Jun Shao
- * @since 2022-03-30
  */
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
     private List<String> neededCoins;
 
-    /**
-     * Constructor for TradeModel class which initializes its fields
-     * 
-     * @param Nothing
-     * @return Nothing
-     */
     public TradeModel() {
         Database proxy = new DatabaseProxy();
         proxy.init();
@@ -118,6 +110,6 @@ public class TradeModel extends Subject {
     }
 
     public String[][] getResults() {
-        return new TradeProcess().trade(brokers).getTable();
+        return new TradeProcess().trade(brokers, neededCoins).getTable();
     }
 }

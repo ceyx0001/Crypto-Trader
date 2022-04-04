@@ -4,6 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Class which is used to access the real embedded database, is a part of the
+ * proxy deisgn pattern as the actual database
+ *
+ * @author Jun Shao
+ * @since 2022-04-04
+ */
 public class RealDatabase extends Database {
     private static RealDatabase dbinstance;
     private Connection connection;
