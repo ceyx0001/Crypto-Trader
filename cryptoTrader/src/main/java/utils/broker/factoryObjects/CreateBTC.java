@@ -9,7 +9,7 @@ package utils.broker.factoryObjects;
  */
 public class CreateBTC implements Creator {
     /**
-     * Creates the strategyt associated with buying BTC coins
+     * Creates the strategy associated with buying BTC coins
      * 
      * @param Nothing
      * @return Strategy the strategy for buying BTC coins

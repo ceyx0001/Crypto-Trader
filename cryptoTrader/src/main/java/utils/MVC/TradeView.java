@@ -123,10 +123,10 @@ public class TradeView extends JFrame implements Observer {
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
-		strategyNames.add("Buy ADA");
-		strategyNames.add("Buy BTC");
-		strategyNames.add("Buy LUNA");
-		strategyNames.add("Sell ETH");
+		strategyNames.add("buy ADA");
+		strategyNames.add("buy BTC");
+		strategyNames.add("sell LUNA");
+		strategyNames.add("sell BNB");
 
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox<String> comboBox = new JComboBox<String>(strategyNames);
