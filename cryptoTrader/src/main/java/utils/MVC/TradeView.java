@@ -181,8 +181,8 @@ public class TradeView extends JFrame implements Observer {
 		if (changed.equals(model)) {
 			JOptionPane.showConfirmDialog(null, "Trading process starting",
 					"Perform Trade", JOptionPane.DEFAULT_OPTION);
+			stats.removeAll();
 		} else if (changed.equals(vc)) {
-			System.out.println("paint graphs");
 			updateStats(vc.getScrollPane());
 			updateStats(vc.getBar());
 		}

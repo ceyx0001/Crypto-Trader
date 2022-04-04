@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.broker.Broker;
 import utils.broker.BrokerFactory;
+import utils.db.Database;
 import utils.db.DatabaseProxy;
 import utils.tradingProcess.TradeProcess;
 
@@ -24,7 +25,9 @@ public class TradeModel extends Subject {
     private List<String> neededCoins;
 
     public TradeModel() {
-        connection = new DatabaseProxy().getConnection();
+        Database proxy = new DatabaseProxy();
+        proxy.init();
+        connection = proxy.getConnection();
         brokers = new HashMap<String, Broker>();
         neededCoins = new ArrayList<String>();
     }

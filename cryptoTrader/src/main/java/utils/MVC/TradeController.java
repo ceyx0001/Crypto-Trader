@@ -22,6 +22,9 @@ public class TradeController implements ActionListener, TableModelListener {
 
     /**
      * Constructor for TradeController class which initializes its fields
+     * 
+     * @param Nothing
+     * @return Nothing
      */
     public TradeController() {
         model = new TradeModel();
@@ -34,9 +37,10 @@ public class TradeController implements ActionListener, TableModelListener {
     }
 
     /**
-     * Method which takes inputs and executes their respective actions.
+     * Handles action events by invoking their associated methods
      *
      * @param e is an ActionEvent object
+     * @return void
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -62,8 +66,10 @@ public class TradeController implements ActionListener, TableModelListener {
     }
 
     /**
-     *
-     * @param e
+     * Checks if a broker is a duplicate after a table cell was edited
+     * 
+     * @param e the TableModelEvent 
+     * @return void
      */
     @Override
     public void tableChanged(TableModelEvent e) {
@@ -79,6 +85,13 @@ public class TradeController implements ActionListener, TableModelListener {
         }
     }
 
+    /**
+     * Invokes the methods required to save the broker table
+     * to the embedded database and start the trading process
+     * 
+     * @param e the TableModelEvent
+     * @return void
+     */
     private void saveTable(DefaultTableModel dtm) {
         for (int count = 0; count < dtm.getRowCount(); count++) {
             Object traderObject = dtm.getValueAt(count, 0);
@@ -105,7 +118,6 @@ public class TradeController implements ActionListener, TableModelListener {
             //System.out.println(model.getBrokers().get(name).getStrat().printStrat());
         }
 
-        view.getStats().removeAll();
         model.notifyObservers();
         vc.createCharts(model.getResults());
         model.saveBrokers();
