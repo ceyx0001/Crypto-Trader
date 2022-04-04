@@ -49,6 +49,8 @@ public class TradeSingle extends Transaction {
 
             if (new Compare().compare(realPrice, stratPrice, op)) {
                 tr.addRow(name, strat, target, required, "Buy", "" + amnt, "" + targetPrice, date);
+            } else {
+                tr.addRow(name, strat, target, required, "Buy", "" + 0, "" + targetPrice, date);
             }
         }
     }

@@ -2,6 +2,7 @@ package utils.MVC;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -45,17 +46,25 @@ public class TradeController implements ActionListener, TableModelListener {
         String command = e.getActionCommand();
         DefaultTableModel dtm = view.getDTM();
         int selectedRow = view.getTable().getSelectedRow();
-        Object val = view.getTable().getValueAt(selectedRow, 0);
-        String name = val.toString();
+        String name = null;
 
         if ("refresh".equals(command)) {
             saveTable(dtm);
         } else if ("addTableRow".equals(command)) {
             dtm.addRow(new String[3]);
-            model.addBrokerInTable(name);
+            if (selectedRow != -1) {
+                Object val = view.getTable().getValueAt(selectedRow, 0);
+                if (val != null) {
+                    name = val.toString();
+                }
+                model.addBrokerInTable(name);
+            }
         } else if ("remTableRow".equals(command)) {
             if (selectedRow != -1) {
-                name = val.toString();
+                Object val = view.getTable().getValueAt(selectedRow, 0);
+                if (val != null) {
+                    name = val.toString();
+                }
                 model.removeBroker(name);
                 model.removeBrokerInTable(name);
                 dtm.removeRow(selectedRow);
@@ -111,14 +120,7 @@ public class TradeController implements ActionListener, TableModelListener {
             String name = traderObject.toString();
             String strat = strategyObject.toString();
             model.getBrokers().put(name, model.newBroker(name, coins, strat));
-            String target = model.getBrokers().get(name).getStrat().getTarget();
-            model.getRequiredCoins().add(target);
-            String[] temp = coins.split(",");
-            for (int i = 0; i < temp.length; i++) {
-                model.getRequiredCoins().add(temp[i]);
-            }
         }
-
         model.notifyObservers();
         model.setDataTable();
         model.setDataMap();

@@ -6,7 +6,9 @@ import utils.tradingProcess.strats.TradeDouble;
 import utils.tradingProcess.strats.TradeSingle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import utils.tradingProcess.strats.Context;
 
@@ -20,8 +22,8 @@ public class TradeManager {
     private static TradeManager tm;
     private HashMap<String, Double> prices;
     private HashMap<String, String> dict;
+    private HashSet<String> required;
     private PricesFacade pf;
-    ArrayList<String> required;
     
     /**
      * Returns the instance of the TradeManager
@@ -29,11 +31,10 @@ public class TradeManager {
      * @param Nothing
      * @return TradeManager the instance of the TradeManager
      */
-    public static TradeManager getInstance(ArrayList<String> required) {
+    public static TradeManager getInstance() {
         if (tm == null) {
-            tm = new TradeManager(required);
+            tm = new TradeManager();
         }
-        required.addAll(required);
         return tm;
     }
 
@@ -43,11 +44,11 @@ public class TradeManager {
 	 * @param Nothing
 	 * @return Nothing
 	 */
-	private TradeManager(ArrayList<String> required) {
+	private TradeManager() {
         pf = new PricesFacade();
 		prices = new HashMap<String, Double>();
+        required = new HashSet<String>();
         dict = pf.getDict();
-        this.required = required;
 	}
 
     /**
@@ -56,14 +57,21 @@ public class TradeManager {
      * @return TradeResult results of the trade
      */
     public TradeResult trade(HashMap<String, Broker> brokers) {
-        for (String name : brokers.keySet()) {
-            Broker b = brokers.get(name);
-            prices.put(b.getStrat().getTarget(), null);
+        for (Broker b : brokers.values()) {
+            String targetCoin = b.getStrat().getTarget();
+            if (!required.contains(targetCoin)) {
+                required.add(targetCoin);
+            }
+            for (String interestCoin : b.getInterest().keySet()) {
+                if (!required.contains(interestCoin)) {
+                    required.add(interestCoin);
+                }
+            }
+            pf.getPrices(prices, dict, new ArrayList<String>(required));
             for (String coin : b.getInterest().keySet()) {
-                pf.getPrices(prices, dict, required);
                 Double targetCoinPrice = prices.get(b.getStrat().getTarget());
                 b.setPrice(targetCoinPrice);
-                if (brokers.get(name) != null) {
+                if (brokers.get(b.getName()) != null) {
                     b.setInterestPrice(coin, prices.get(coin));
                 }
             }

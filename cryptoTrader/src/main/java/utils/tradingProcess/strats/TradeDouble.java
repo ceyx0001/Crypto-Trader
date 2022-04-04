@@ -44,7 +44,6 @@ public class TradeDouble extends Transaction {
             tr.addRow(name, strat, target, required1 + "," + required2, "Buy", "Null", "Null", date);
             System.out.println("added");
         } else {
-
             String op1 = data1[1];
             String op2 = data2[1];
             double stratPrice1 = Double.valueOf(data1[2]);
@@ -55,6 +54,8 @@ public class TradeDouble extends Transaction {
 
             if (new Compare().compare(realPrice1, stratPrice1, realPrice2, stratPrice2, op1, op2)) {
                 tr.addRow(name, strat, target, required1 + "," + required2, "Buy", "" + amnt, "" + targetPrice, date);
+            } else {
+                tr.addRow(name, strat, target, required1 + "," + required2, "Buy", "" + 0, "" + targetPrice, date);
             }
         }
     }

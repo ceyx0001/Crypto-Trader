@@ -19,28 +19,27 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class GraphCreator extends Subject {
-	JScrollPane scrollPane;
-	JTable table;
-	DefaultTableModel dtm;
-	ChartPanel time;
-	ChartPanel scatter;
-	ChartPanel bar;
+	private JScrollPane scrollPane;
+	private JTable table;
+	private DefaultTableModel dtm;
+	private ChartPanel bar;
+	private final int quantityCol = 5;
+	private final int stratCol = 1;
+	private final int nameCol = 0;
 
 	public GraphCreator() {
 		scrollPane = new JScrollPane();
-		Object[] headers = { "Broker", "Strategy", "Required Coin List", "CryptoCoin", "Action", "Quantity",
+		Object[] headers = { "Broker", "Strategy", "Coin List Needed", "CryptoCoin", "Action", "Quantity",
 				"Price (CAD)",
 				"Date (dd-MM-YY)" };
 		dtm = new DefaultTableModel(headers, 0);
 		table = new JTable(dtm);
-		time = new ChartPanel(null);
-		scatter = new ChartPanel(null);
 		bar = new ChartPanel(null);
 	}
 
 	public void createCharts(HashMap<String, HashMap<String, Integer>> map, String[][] data, boolean missingInfo) {
 		createTableOutput(data);
-		createBar(map, missingInfo);
+		createBar(map, data, missingInfo);
 		notifyObservers();
 	}
 
@@ -60,7 +59,7 @@ public class GraphCreator extends Subject {
 	}
 
 
-	private void createBar(HashMap<String, HashMap<String, Integer>> map, boolean missingInfo) {
+	private void createBar(HashMap<String, HashMap<String, Integer>> map, String[][] data, boolean missingInfo) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 		if (missingInfo) {
@@ -70,11 +69,13 @@ public class GraphCreator extends Subject {
 		}
 		
 
-		for (String broker : map.keySet()) {
-			HashMap<String, Integer> brokerStrats = map.get(broker);
-			for (String strat : brokerStrats.keySet()) {
-				int count = brokerStrats.get(strat);
-				dataset.setValue(count, broker, strat);
+		for (int r = 0; r < data.length; r++) {
+			HashMap<String, Integer> brokerStrats = map.get(data[r][nameCol]);
+			for (int c = 0; c < data.length; c++) {
+				if (!(data[r][quantityCol].equals("Null") || data[r][quantityCol].equals("0"))) {
+					int count = brokerStrats.get(data[r][stratCol]);
+					dataset.setValue(count, data[r][nameCol], data[r][stratCol]);
+				}
 			}
 		}
 

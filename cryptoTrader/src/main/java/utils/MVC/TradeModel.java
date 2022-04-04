@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import utils.broker.Broker;
 import utils.broker.BrokerFactory;
@@ -26,9 +27,8 @@ import utils.tradingProcess.TradeManager;
 public class TradeModel extends Subject {
     private Connection connection;
     private HashMap<String, Broker> brokers;
-    private ArrayList<String> brokersInTable;
+    private HashSet<String> brokersInTable;
     BrokerFactory factory;
-    private ArrayList<String> neededCoins;
     private HashMap<String, HashMap<String, Integer>> data;
     private String[][] dataTable;
     private boolean missingInfo;
@@ -45,18 +45,13 @@ public class TradeModel extends Subject {
         proxy.init();
         connection = proxy.getConnection();
         brokers = new HashMap<String, Broker>();
-        brokersInTable = new ArrayList<String>();
-        neededCoins = new ArrayList<String>();
+        brokersInTable = new HashSet<String>();
         data = new HashMap<String, HashMap<String, Integer>>();
         missingInfo = false;
     }
 
     public HashMap<String, Broker> getBrokers() {
         return brokers;
-    }
-
-    public ArrayList<String> getRequiredCoins() {
-        return neededCoins;
     }
 
     public void logTrade() {
@@ -139,11 +134,15 @@ public class TradeModel extends Subject {
     }
 
     protected void setDataTable() {
-        dataTable = TradeManager.getInstance(neededCoins).trade(brokers).getTable();
+        dataTable = TradeManager.getInstance().trade(brokers).getTable();
     }
 
     protected boolean hasDupe(String broker) {
         return brokersInTable.contains(broker);
+    }
+
+    protected void printInTable() {
+        System.out.println(Arrays.toString(brokersInTable.toArray()));
     }
 
     protected void addBrokerInTable(String name) {
