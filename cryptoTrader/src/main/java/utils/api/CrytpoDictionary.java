@@ -57,7 +57,7 @@ public class CrytpoDictionary {
 				
 				for (int i = 0; i < size; i++) {
 					JsonObject object = jsonArray.get(i).getAsJsonObject();
-					String name = object.get("name").getAsString().toLowerCase().replaceAll(" ", "-");
+					String name = object.get("id").getAsString().toLowerCase();
 					String symbol = object.get("symbol").getAsString().toUpperCase();
 					cryptoDictionary.put(symbol, name);
 				}
