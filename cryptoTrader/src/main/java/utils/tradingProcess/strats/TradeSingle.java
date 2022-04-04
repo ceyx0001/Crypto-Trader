@@ -1,7 +1,6 @@
 package utils.tradingProcess.strats;
 
 import utils.broker.Broker;
-import utils.tradingProcess.TradeResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ public class TradeSingle extends Transaction {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date dateVar = new Date();
         String date = formatter.format(dateVar);
-        TradeResult tr = c.getTradeResult();
         HashMap<String, Double> prices = c.getPrices();
         Broker b = c.getBroker();
         String name = b.getName();
@@ -40,7 +38,7 @@ public class TradeSingle extends Transaction {
         String required = data[0];
 
         if (fail(interest, required)) {
-            tr.addRow(name, strat, target, required, "Buy", "Null", "Null", date);
+            c.getTradeResult().addRow(name, strat, target, required, "Buy", "Null", "Null", date);
         } else {
             String op = data[1];
             double stratPrice = Double.valueOf(data[2]);
@@ -48,9 +46,9 @@ public class TradeSingle extends Transaction {
             double targetPrice = prices.get(target);
 
             if (new Compare().compare(realPrice, stratPrice, op)) {
-                tr.addRow(name, strat, target, required, "Buy", "" + amnt, "" + targetPrice, date);
+                c.getTradeResult().addRow(name, strat, target, required, "Buy", "" + amnt, "" + targetPrice, date);
             } else {
-                tr.addRow(name, strat, target, required, "Buy", "" + 0, "" + targetPrice, date);
+                c.getTradeResult().addRow(name, strat, target, required, "Buy", "" + 0, "" + targetPrice, date);
             }
         }
     }

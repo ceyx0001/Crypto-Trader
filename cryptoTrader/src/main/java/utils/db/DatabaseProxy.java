@@ -1,7 +1,6 @@
 package utils.db;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Class which is used to represent a database proxy, which is a placeholder for a database object in the
@@ -32,17 +31,5 @@ public class DatabaseProxy extends Database {
             return db.getConnection();
         }
         return null;
-    }
-
-    /**
-     * Method which disconnects from the database
-     */
-    @Override
-    public void disconnect() {
-        try {
-            db.getConnection().close();
-        } catch (SQLException e) {
-            System.out.println("Disconnect failed: " + e.getMessage());
-        }
     }
 }

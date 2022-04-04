@@ -16,9 +16,4 @@ public abstract class Database {
      * @return a Connection object
      */
     public abstract Connection getConnection();
-
-    /**
-     * Abstract class which is used to disconnect from the database
-     */
-    public abstract void disconnect();
 }

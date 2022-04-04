@@ -11,8 +11,6 @@ import java.util.HashMap;
  * @date 2022-03-30
  */
 public class PricesFacade {
-    private DataFetcher df = new DataFetcher();
-    private CrytpoDictionary dict = new CrytpoDictionary();
     /**
      * Gets the price of a coin by invoking the required methods in the package
      * @param neededCoins the list of coins required for a trading strategy

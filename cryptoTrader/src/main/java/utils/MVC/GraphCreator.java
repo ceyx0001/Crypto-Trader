@@ -2,7 +2,6 @@ package utils.MVC;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;

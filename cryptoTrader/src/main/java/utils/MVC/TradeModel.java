@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class TradeModel extends Subject {
     private String[][] dataTable;
     private boolean missingInfo;
 
-    public TradeModel() {
+    protected TradeModel() {
         Database proxy = new DatabaseProxy();
         factory = new BrokerFactory();
         proxy.init();
@@ -42,11 +41,11 @@ public class TradeModel extends Subject {
         missingInfo = false;
     }
 
-    public HashMap<String, Broker> getBrokers() {
+    protected HashMap<String, Broker> getBrokers() {
         return brokers;
     }
 
-    public void logTrade() {
+    protected void logTrade() {
         try {
             String insert = "INSERT OR REPLACE INTO Brokers(name, strat, target, action, amnt, price, date, actionAmnt) VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement s = connection.prepareStatement(insert);
@@ -86,7 +85,16 @@ public class TradeModel extends Subject {
         return formatter.format(dateVar);
     }
 
-    public void removeBroker(String name) {
+    protected void closeConnection() {
+        try {
+            System.out.println("Disconnected.");
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Disconnect failed: " + e.getMessage());
+        }
+    }
+
+    protected void removeBroker(String name) {
         brokers.remove(name);
     }
 

@@ -30,7 +30,6 @@ public class TradeView extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 	private TradeModel model;
 	private GraphCreator vc;
-
 	private JPanel stats;
 	private JButton trade;
 	private JButton addRow;
@@ -40,41 +39,41 @@ public class TradeView extends JFrame implements Observer {
 
 	/**
 	 * Method which returns trade button
-	 * @return trade button
+	 * @return trade the button thats starts the trading process
 	 */
-	public JButton getTradeButton() {
+	protected JButton getTradeButton() {
 		return trade;
 	}
 
 	/**
 	 * Method which returns add button
-	 * @return add button
+	 * @return add the button that adds rows
 	 */
-	public JButton getAddButton() {
+	protected JButton getAddButton() {
 		return addRow;
 	}
 
 	/**
 	 * Method which returns remove row button
-	 * @return remove row button
+	 * @return remove the button that removes rows
 	 */
-	public JButton getRemButton() {
+	protected JButton getRemButton() {
 		return remRow;
 	}
 
 	/**
 	 * Method which returns JTable object table
-	 * @return table
+	 * @return table the table for user input
 	 */
-	public JTable getTable() {
+	protected JTable getTable() {
 		return table;
 	}
 
 	/**
 	 * Method which returns JPanel object
-	 * @return panel
+	 * @return stats the stats panel of the view
 	 */
-	public JPanel getStats() {
+	protected JPanel getStats() {
 		return stats;
 	}
 
@@ -82,7 +81,7 @@ public class TradeView extends JFrame implements Observer {
 	 * Method which returns DefaulTableModel object
 	 * @return default table model
 	 */
-	public DefaultTableModel getDTM() {
+	protected DefaultTableModel getDTM() {
 		return dtm;
 	}
 
@@ -91,9 +90,8 @@ public class TradeView extends JFrame implements Observer {
 	}
 
 	protected TradeView(TradeModel model, GraphCreator vc) {
-		// Set window title
 		super("Crypto Trading Tool");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.model = model;
 		this.vc = vc;
 		model.attach(this);
@@ -161,7 +159,7 @@ public class TradeView extends JFrame implements Observer {
 	 *
 	 * @param component is a JComponent object
 	 */
-	public void updateStats(JComponent component) {
+	protected void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
 		super.revalidate();

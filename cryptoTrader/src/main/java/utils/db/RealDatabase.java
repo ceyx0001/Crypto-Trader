@@ -79,15 +79,6 @@ public class RealDatabase extends Database {
         }
     }
 
-    @Override
-    public void disconnect() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println("Disconnect failed: " + e.getMessage());
-        }
-    }
-
     /**
      * Creates the connection to the embedded database
      * 
